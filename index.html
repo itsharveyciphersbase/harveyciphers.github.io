@@ -3,18 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Harvey Ciphers – software engineer, product strategist, and creative technologist." />
-  <title>Harvey Ciphers | Software Engineer & Product Strategist</title>
+  <meta
+    name="description"
+    content="GitHub Pages Playground – explore portfolio, blog, docs, landing page, interactive demos, and design system examples in one static experience."
+  />
+  <title>GitHub Pages Playground | Harvey Ciphers</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
 <body>
   <header class="site-header" id="top">
     <div class="container header-content">
-      <a class="logo" href="#top">HC</a>
-      <nav class="main-nav" aria-label="Primary navigation">
+      <a class="logo" href="#top" aria-label="GitHub Pages Playground home">Pages Lab</a>
+      <nav class="main-nav" aria-label="Primary">
         <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
           <span class="sr-only">Toggle navigation</span>
           <span></span>
@@ -22,248 +28,469 @@
           <span></span>
         </button>
         <ul id="nav-menu" aria-expanded="false">
-          <li><a href="#about">About</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#projects">Work</a></li>
-          <li><a href="#testimonials">Testimonials</a></li>
-          <li><a href="#contact">Contact</a></li>
+          <li><a href="#portfolio">Portfolio</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#docs">Docs</a></li>
+          <li><a href="#launch">Launch</a></li>
+          <li><a href="#playground">Playground</a></li>
+          <li><a href="#system">Design System</a></li>
+          <li><a href="#start">Get Started</a></li>
         </ul>
       </nav>
-      <a class="cta" href="#contact">Let's Collaborate</a>
+      <a class="cta" href="https://pages.github.com/" target="_blank" rel="noopener">Deploy to GitHub Pages</a>
     </div>
   </header>
 
   <main>
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="container hero-content">
-        <div>
-          <p class="eyebrow">Product-minded engineering leadership</p>
-          <h1 id="hero-title">Hi, I'm Harvey Ciphers.</h1>
+    <section class="hero" id="overview" aria-labelledby="hero-title">
+      <div class="container hero-layout">
+        <div class="hero-copy">
+          <p class="eyebrow">GitHub Pages Playground</p>
+          <h1 id="hero-title">Build a whole universe of static experiences.</h1>
           <p class="lead">
-            I craft resilient digital products and the teams behind them. With over a decade of shipping
-            delightful software, I translate bold ideas into human-centered, measurable outcomes.
+            GitHub Pages isn’t just for simple landing pages—it can host portfolios, blogs, documentation, launches,
+            and even interactive demos. This playground stitches all those possibilities together so you can remix them
+            for your own brand.
           </p>
           <div class="hero-actions">
-            <a class="btn primary" href="#projects">See my work</a>
-            <a class="btn secondary" href="#contact">Book a strategy call</a>
+            <a class="btn primary" href="#portfolio">Start exploring</a>
+            <a class="btn secondary" href="https://docs.github.com/en/pages" target="_blank" rel="noopener"
+              >Read the docs</a
+            >
           </div>
-          <dl class="hero-stats" aria-label="Key achievements">
+          <dl class="hero-highlights" aria-label="Highlights of what you can build">
             <div>
-              <dt>12+</dt>
-              <dd>Years leading high-performing engineering teams</dd>
+              <dt>6 demos</dt>
+              <dd>From personal branding to component libraries</dd>
             </div>
             <div>
-              <dt>$80M+</dt>
-              <dd>Revenue unlocked for growth-stage startups</dd>
+              <dt>100% static</dt>
+              <dd>Pure HTML, CSS, and JavaScript &mdash; deploy anywhere</dd>
             </div>
             <div>
-              <dt>6</dt>
-              <dd>Product launches featured in TechCrunch &amp; Wired</dd>
+              <dt>Instant remix</dt>
+              <dd>Copy sections into your own repositories</dd>
             </div>
           </dl>
         </div>
-        <figure class="hero-portrait">
-          <img src="assets/img/profile-placeholder.svg" alt="Portrait of Harvey Ciphers" />
-          <figcaption>Based in San Francisco • Available for remote collaboration</figcaption>
-        </figure>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-visual-card portfolio-preview">
+            <span class="label">Personal Brand</span>
+            <h3>Hi, I’m Harvey.</h3>
+            <p>Lead engineer, systems thinker, and community builder.</p>
+            <div class="tag-row">
+              <span>Projects</span>
+              <span>Speaking</span>
+              <span>Contact</span>
+            </div>
+          </div>
+          <div class="hero-visual-card blog-preview">
+            <span class="label">Latest Posts</span>
+            <ul>
+              <li>
+                <strong>Designing with Constraints</strong>
+                <span>Strategy</span>
+              </li>
+              <li>
+                <strong>From Prototype to Launch</strong>
+                <span>Product</span>
+              </li>
+              <li>
+                <strong>Mentoring Remote Teams</strong>
+                <span>Leadership</span>
+              </li>
+            </ul>
+          </div>
+          <div class="hero-visual-card docs-preview">
+            <span class="label">Docs</span>
+            <div class="docs-layout">
+              <nav>
+                <span>Getting Started</span>
+                <span>Configuration</span>
+                <span>CLI Reference</span>
+              </nav>
+              <article>
+                <h4>Pages CLI</h4>
+                <p>Ship docs with a single <code>npm run publish</code>.</p>
+              </article>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="about" aria-labelledby="about-title">
-      <div class="container two-column">
+    <section class="section" id="portfolio" aria-labelledby="portfolio-title">
+      <div class="container feature">
+        <div class="feature-copy">
+          <p class="eyebrow">Personal portfolio</p>
+          <h2 id="portfolio-title">Showcase your craft and invite collaboration.</h2>
+          <p>
+            Use GitHub Pages to host a thoughtful personal brand. Combine hero statements, highlight reels, testimonials,
+            and calls-to-action to land your next role or client engagement.
+          </p>
+          <ul class="feature-list">
+            <li>Story-driven hero section with high-impact stats.</li>
+            <li>Modular cards for skills, services, or speaking topics.</li>
+            <li>Contact panel that integrates with email or scheduling links.</li>
+          </ul>
+        </div>
+        <div class="feature-preview portfolio-card" role="img" aria-label="Example of a portfolio page">
+          <header>
+            <span>Harvey Ciphers</span>
+            <span class="status">Open to collaborations</span>
+          </header>
+          <div class="feature-body">
+            <h3>Designing resilient software teams.</h3>
+            <p>Case studies, keynote speaking, and mentorship programs in one polished, responsive home.</p>
+          </div>
+          <footer>
+            <button type="button">View portfolio</button>
+            <button type="button" class="secondary">Book intro</button>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="blog" aria-labelledby="blog-title">
+      <div class="container feature">
+        <div class="feature-copy">
+          <p class="eyebrow">Blog &amp; knowledge base</p>
+          <h2 id="blog-title">Publish articles, changelogs, and ideas.</h2>
+          <p>
+            GitHub Pages powers Markdown blogs via Jekyll or any static site generator. Organize categories, add RSS
+            feeds, and automate builds with GitHub Actions.
+          </p>
+          <ul class="feature-list">
+            <li>Author posts in Markdown and let Jekyll render the layout.</li>
+            <li>Use collections for tutorials, release notes, or FAQs.</li>
+            <li>Embed interactive code snippets or data visualizations.</li>
+          </ul>
+        </div>
+        <div class="feature-preview blog-card" role="img" aria-label="Example blog homepage">
+          <header>
+            <span>Notebook</span>
+            <span class="tag">RSS</span>
+          </header>
+          <article>
+            <h3>Why personal sites still matter in 2024</h3>
+            <p>
+              Longform reflections on leadership, engineering, and the craft of product. Pagination, categories, and
+              taxonomy included.
+            </p>
+          </article>
+          <div class="post-filters" role="group" aria-label="Filter posts by topic">
+            <button type="button" class="post-filter is-active" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="post-filter" data-filter="strategy" aria-pressed="false">Strategy</button>
+            <button type="button" class="post-filter" data-filter="engineering" aria-pressed="false">Engineering</button>
+            <button type="button" class="post-filter" data-filter="community" aria-pressed="false">Community</button>
+          </div>
+          <ul class="post-list">
+            <li data-topic="strategy">
+              <span class="post-topic">Strategy</span>
+              <span class="post-title">Designing learning loops for teams</span>
+              <span class="post-meta">8 min read</span>
+            </li>
+            <li data-topic="engineering">
+              <span class="post-topic">Engineering</span>
+              <span class="post-title">Automating docs with GitHub Actions</span>
+              <span class="post-meta">12 min read</span>
+            </li>
+            <li data-topic="community">
+              <span class="post-topic">Community</span>
+              <span class="post-title">Hosting remote salons</span>
+              <span class="post-meta">5 min read</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="docs" aria-labelledby="docs-title">
+      <div class="container feature">
+        <div class="feature-copy">
+          <p class="eyebrow">Product documentation</p>
+          <h2 id="docs-title">Document APIs, onboarding flows, and workflows.</h2>
+          <p>
+            Serve accessible, searchable documentation directly from your repository. Pair Markdown content with custom
+            navigation, code examples, and version switches.
+          </p>
+          <ul class="feature-list">
+            <li>Sidebars with nested navigation driven by YAML or front matter.</li>
+            <li>Admonitions for tips, warnings, and reference callouts.</li>
+            <li>Embed API consoles and diagrams using vanilla JS or Web Components.</li>
+          </ul>
+        </div>
+        <div class="feature-preview docs-card" role="img" aria-label="Example documentation layout">
+          <aside>
+            <h3>Docs Menu</h3>
+            <nav>
+              <a href="#">Introduction</a>
+              <a href="#" class="active">Quickstart</a>
+              <a href="#">Configuration</a>
+              <a href="#">Deployments</a>
+              <a href="#">CLI Reference</a>
+            </nav>
+          </aside>
+          <article>
+            <header>
+              <span class="badge">v2.3</span>
+              <h3>Quickstart</h3>
+            </header>
+            <p>
+              Install the CLI, authenticate with GitHub, and push your static build. Every merge to <code>main</code>
+              publishes automatically.
+            </p>
+            <div class="code-tabs" role="tablist" aria-label="Deploy commands">
+              <button
+                type="button"
+                class="code-tab is-active"
+                id="tab-js"
+                role="tab"
+                aria-selected="true"
+                aria-controls="code-js"
+                data-target="code-js"
+              >
+                JavaScript
+              </button>
+              <button
+                type="button"
+                class="code-tab"
+                id="tab-py"
+                role="tab"
+                aria-selected="false"
+                aria-controls="code-py"
+                data-target="code-py"
+              >
+                Python
+              </button>
+              <button
+                type="button"
+                class="code-tab"
+                id="tab-cli"
+                role="tab"
+                aria-selected="false"
+                aria-controls="code-cli"
+                data-target="code-cli"
+              >
+                CLI
+              </button>
+            </div>
+            <div id="code-js" class="code-panel is-active" role="tabpanel" aria-labelledby="tab-js">
+              <pre><code>import { deploy } from '@pages/cli';
+
+deploy({
+  source: './dist',
+  branch: 'gh-pages',
+});
+</code></pre>
+            </div>
+            <div id="code-py" class="code-panel" role="tabpanel" aria-labelledby="tab-py">
+              <pre><code>from pages import deploy
+
+deploy(
+    source="./site",
+    branch="gh-pages",
+)
+</code></pre>
+            </div>
+            <div id="code-cli" class="code-panel" role="tabpanel" aria-labelledby="tab-cli">
+              <pre><code>$ npm install -g pages-cli
+$ pages login
+$ pages deploy
+</code></pre>
+            </div>
+            <div class="callout success">
+              <strong>Tip:</strong> Automate docs previews with pull request environments.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="launch" aria-labelledby="launch-title">
+      <div class="container feature">
+        <div class="feature-copy">
+          <p class="eyebrow">Launch &amp; marketing</p>
+          <h2 id="launch-title">Announce new products with conversion-focused pages.</h2>
+          <p>
+            Fast, responsive marketing sites make it simple to capture interest. Pair crisp storytelling with forms,
+            analytics snippets, and integration badges to prove credibility.
+          </p>
+          <ul class="feature-list">
+            <li>Animated hero sections with gradients and device mockups.</li>
+            <li>Feature grids, pricing tables, and social proof.</li>
+            <li>Embed signup forms using services like ConvertKit or Formspree.</li>
+          </ul>
+        </div>
+        <div class="feature-preview launch-card" role="img" aria-label="Example launch landing page">
+          <header>
+            <span class="beta">Beta</span>
+            <h3>Signal Launch Kit</h3>
+            <p>Turn product ideas into high-impact launch pages in under an hour.</p>
+          </header>
+          <ul class="benefits">
+            <li>Craft reusable component sections</li>
+            <li>Connect to your analytics stack</li>
+            <li>Sync updates via GitHub Actions</li>
+          </ul>
+          <div class="cta-row">
+            <button type="button">Join the waitlist</button>
+            <button type="button" class="secondary">View demo</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="playground" aria-labelledby="playground-title">
+      <div class="container feature">
+        <div class="feature-copy">
+          <p class="eyebrow">Interactive playground</p>
+          <h2 id="playground-title">Add client-side interactivity without servers.</h2>
+          <p>
+            Static doesn’t mean static-looking. Use vanilla JavaScript, WebGL, or compiled SPAs to create interactive
+            experiences that still deploy as static assets.
+          </p>
+          <ul class="feature-list">
+            <li>Build calculators, configurators, or sandboxed demos.</li>
+            <li>Fetch data from third-party APIs with client-side requests.</li>
+            <li>Layer in animations using GSAP, Three.js, or CSS transitions.</li>
+          </ul>
+        </div>
+        <div class="feature-preview playground-card">
+          <header>
+            <h3>Gradient Builder</h3>
+            <p>Play with color variables and export the CSS snippet.</p>
+          </header>
+          <form class="playground-controls" aria-label="Gradient builder controls">
+            <label>
+              Base color
+              <input type="color" id="color-base" name="color-base" value="#6366f1" />
+            </label>
+            <label>
+              Accent color
+              <input type="color" id="color-accent" name="color-accent" value="#22d3ee" />
+            </label>
+            <label>
+              Angle
+              <input type="range" id="gradient-angle" name="gradient-angle" min="0" max="360" value="135" />
+            </label>
+            <button type="button" id="randomize-gradient">Randomize</button>
+          </form>
+          <div class="playground-preview" role="img" aria-live="polite">
+            <div class="preview-card">
+              <span class="label">Live preview</span>
+              <h4>Build beautiful gradients.</h4>
+              <p>Perfect for hero backgrounds, call-to-action banners, and component cards.</p>
+            </div>
+          </div>
+          <div class="playground-code">
+            <pre><code id="gradient-code">background: linear-gradient(135deg, #6366f1, #22d3ee);</code></pre>
+            <button type="button" class="copy-gradient">Copy CSS</button>
+            <span class="copy-feedback" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="system" aria-labelledby="system-title">
+      <div class="container feature">
+        <div class="feature-copy">
+          <p class="eyebrow">Design systems &amp; Storybooks</p>
+          <h2 id="system-title">Document your components and brand tokens.</h2>
+          <p>
+            Export Storybook or custom component catalogs as static builds. Showcase tokens, component states, and usage
+            guidelines to keep teams aligned.
+          </p>
+          <ul class="feature-list">
+            <li>Display typography scales, color palettes, and spacing rules.</li>
+            <li>Provide usage guidelines with props tables and do/don’t examples.</li>
+            <li>Automate publishing with every design system release.</li>
+          </ul>
+        </div>
+        <div class="feature-preview system-card" data-theme="light" role="img" aria-label="Example design system documentation">
+          <header>
+            <h3>Northstar Design Kit</h3>
+            <span>v4.1</span>
+          </header>
+          <div class="system-controls" role="group" aria-label="Toggle theme preview">
+            <button type="button" class="theme-toggle is-active" data-theme="light" aria-pressed="true">Light</button>
+            <button type="button" class="theme-toggle" data-theme="dark" aria-pressed="false">Dark</button>
+          </div>
+          <section class="token-grid">
+            <div>
+              <h4>Colors</h4>
+              <div class="swatches">
+                <span class="swatch" data-label="Primary"></span>
+                <span class="swatch" data-label="Accent"></span>
+                <span class="swatch" data-label="Surface"></span>
+                <span class="swatch" data-label="Success"></span>
+              </div>
+            </div>
+            <div>
+              <h4>Typography</h4>
+              <p class="type-sample">Space Grotesk 600 • 32px</p>
+              <p class="type-sample small">Inter 400 • 16px</p>
+            </div>
+            <div>
+              <h4>Components</h4>
+              <div class="component-row">
+                <button type="button" class="ghost">Secondary CTA</button>
+                <button type="button">Primary CTA</button>
+              </div>
+            </div>
+          </section>
+          <footer>
+            <p>Ship a shared source of truth for product, design, and engineering.</p>
+          </footer>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="start" aria-labelledby="start-title">
+      <div class="container get-started">
         <div>
-          <p class="eyebrow">About</p>
-          <h2 id="about-title">Engineering new possibilities</h2>
+          <p class="eyebrow">Get started</p>
+          <h2 id="start-title">Ready to remix these patterns?</h2>
           <p>
-            I'm a software engineer, product strategist, and creative technologist with roots in both startup and
-            enterprise ecosystems. My north star is building tools that empower people—whether that's modernizing legacy
-            systems, prototyping frontier ideas, or mentoring teams to deliver with empathy.
-          </p>
-          <p>
-            Currently, I advise early-stage founders on technical strategy, lead cross-functional product squads, and
-            occasionally speak on leadership and inclusive innovation.
+            Clone the repository, customize the sections you need, and publish straight to GitHub Pages. Pair this with
+            Actions workflows to automate builds from your favorite framework.
           </p>
         </div>
-        <div class="about-cards" role="list">
-          <article class="card" role="listitem">
-            <h3>What drives me</h3>
-            <p>Turning complexity into clarity and aligning technology with the heart of the problem.</p>
-          </article>
-          <article class="card" role="listitem">
-            <h3>How I work</h3>
-            <p>Collaborative, transparent, and data-informed. I ship fast without sacrificing craft or accessibility.</p>
-          </article>
-          <article class="card" role="listitem">
-            <h3>Beyond the screen</h3>
-            <p>Outdoor explorer, analog synthesizer tinkerer, and volunteer mentor for underrepresented technologists.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="skills" aria-labelledby="skills-title">
-      <div class="container">
-        <p class="eyebrow">Strengths</p>
-        <h2 id="skills-title">Where I create the most impact</h2>
-        <div class="skills-grid" role="list">
-          <article class="card" role="listitem">
-            <h3>Product Engineering</h3>
-            <ul>
-              <li>Full-stack TypeScript, Python, and Go</li>
-              <li>Cloud-native architecture &amp; DevOps</li>
-              <li>Design systems &amp; accessibility audits</li>
-            </ul>
-          </article>
-          <article class="card" role="listitem">
-            <h3>Strategy &amp; Leadership</h3>
-            <ul>
-              <li>Product discovery &amp; roadmap facilitation</li>
-              <li>Team building, hiring, and mentorship</li>
-              <li>Analytics instrumentation &amp; OKR alignment</li>
-            </ul>
-          </article>
-          <article class="card" role="listitem">
-            <h3>Innovation &amp; Research</h3>
-            <ul>
-              <li>AI-assisted creative tooling</li>
-              <li>Rapid prototyping &amp; user testing</li>
-              <li>Technical due diligence for investors</li>
-            </ul>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="projects" aria-labelledby="projects-title">
-      <div class="container">
-        <p class="eyebrow">Selected work</p>
-        <h2 id="projects-title">Projects that moved the needle</h2>
-        <div class="projects-grid">
-          <article class="project-card">
-            <div class="project-meta">
-              <span class="project-tag">Product Strategy</span>
-              <span class="project-year">2023</span>
-            </div>
-            <h3>AtlasOS for HealthTech</h3>
-            <p>
-              Led a product transformation for a Series B health platform. Introduced modular architecture, launched a
-              clinician insights dashboard, and reduced support tickets by 45%.
-            </p>
-            <a class="project-link" href="https://example.com" target="_blank" rel="noopener">Read the case study</a>
-          </article>
-          <article class="project-card">
-            <div class="project-meta">
-              <span class="project-tag">Engineering Leadership</span>
-              <span class="project-year">2022</span>
-            </div>
-            <h3>Momentum Analytics Platform</h3>
-            <p>
-              Scaled an analytics suite from MVP to enterprise adoption. Built data pipelines, mentoring a team of 14
-              engineers, and established a roadmap that doubled activation.
-            </p>
-            <a class="project-link" href="https://example.com" target="_blank" rel="noopener">See the metrics</a>
-          </article>
-          <article class="project-card">
-            <div class="project-meta">
-              <span class="project-tag">Creative Technology</span>
-              <span class="project-year">2021</span>
-            </div>
-            <h3>Signal Studio</h3>
-            <p>
-              Built an interactive sound design experience showcased at SXSW, blending WebGL visuals with machine-learning
-              generated audio textures.
-            </p>
-            <a class="project-link" href="https://example.com" target="_blank" rel="noopener">View the experience</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section testimonials" id="testimonials" aria-labelledby="testimonials-title">
-      <div class="container">
-        <p class="eyebrow">Testimonials</p>
-        <h2 id="testimonials-title">Trusted by founders &amp; teams</h2>
-        <div class="testimonials-grid">
-          <figure class="testimonial">
-            <blockquote>
-              “Harvey has an uncanny ability to connect the dots between product vision and technical execution. Our team
-              finally feels aligned.”
-            </blockquote>
-            <figcaption>
-              <span class="name">Aria Singh</span>
-              <span class="title">CEO, Lumina Health</span>
-            </figcaption>
-          </figure>
-          <figure class="testimonial">
-            <blockquote>
-              “From day one, Harvey elevated our engineering culture. Their mentorship program continues to reduce churn
-              and improve delivery.”
-            </blockquote>
-            <figcaption>
-              <span class="name">Miguel Torres</span>
-              <span class="title">VP Engineering, Momentum</span>
-            </figcaption>
-          </figure>
-          <figure class="testimonial">
-            <blockquote>
-              “Harvey blends experimentation with discipline. Our AI-powered prototype went from idea to launch in six
-              weeks.”
-            </blockquote>
-            <figcaption>
-              <span class="name">Priya Natarajan</span>
-              <span class="title">Head of Product, Signal Studio</span>
-            </figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <section class="section contact" id="contact" aria-labelledby="contact-title">
-      <div class="container contact-inner">
-        <div>
-          <p class="eyebrow">Next steps</p>
-          <h2 id="contact-title">Let's build something lasting</h2>
-          <p>
-            Ready to collaborate or explore a new idea? Drop me a message with the vision and the kind of impact you're
-            aiming for. I'll respond within two business days.
-          </p>
-          <div class="contact-info">
-            <a href="mailto:hello@harveyciphers.com">hello@harveyciphers.com</a>
-            <a href="https://www.linkedin.com/in/harveyciphers" target="_blank" rel="noopener">LinkedIn</a>
-            <a href="https://github.com/harveyciphers" target="_blank" rel="noopener">GitHub</a>
+        <div class="start-steps">
+          <ol>
+            <li><strong>Fork or clone.</strong> Duplicate this playground into your own GitHub account.</li>
+            <li><strong>Edit the content.</strong> Replace copy, imagery, and components with your brand.</li>
+            <li><strong>Publish.</strong> Push to <code>main</code> or a <code>gh-pages</code> branch and flip the GitHub Pages switch.</li>
+          </ol>
+          <div class="start-links">
+            <a class="btn primary" href="https://github.com/new" target="_blank" rel="noopener">Create a repo</a>
+            <a class="btn secondary" href="https://github.com/features/actions" target="_blank" rel="noopener"
+              >Automate with Actions</a
+            >
           </div>
         </div>
-        <form class="contact-form" action="https://formspree.io/f/mayvlkkr" method="POST">
-          <div class="form-field">
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Your name" required />
-          </div>
-          <div class="form-field">
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required />
-          </div>
-          <div class="form-field">
-            <label for="company">Company</label>
-            <input id="company" name="company" type="text" placeholder="Where you work" />
-          </div>
-          <div class="form-field">
-            <label for="message">How can I help?</label>
-            <textarea id="message" name="message" rows="4" placeholder="Share your goals"></textarea>
-          </div>
-          <button class="btn primary" type="submit">Send message</button>
-          <p class="form-footnote">By submitting, you agree to receive a response via email.</p>
-        </form>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <p>&copy; <span id="year"></span> Harvey Ciphers. All rights reserved.</p>
-      <a class="back-to-top" href="#top">Back to top</a>
+    <div class="container footer-content">
+      <div>
+        <span class="logo">Pages Lab</span>
+        <p>
+          Crafted by Harvey Ciphers to showcase how far a static site can go. Use these patterns as a springboard for
+          your own GitHub Pages projects.
+        </p>
+      </div>
+      <div class="footer-meta">
+        <a href="https://github.com/harveyciphers" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="#top">Back to top</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year"></span> Harvey Ciphers. All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js" defer></script>
 </body>
 </html>
