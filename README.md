@@ -7,8 +7,16 @@ comfort of static assets.
 
 - `index.html` – A guided tour through portfolio, blog, docs, launch, interactive, and design-system layouts.
 - `assets/css/styles.css` – Global design tokens and responsive styling for each showcase panel.
-- `assets/js/main.js` – Navigation enhancements, smooth scrolling, and the gradient builder demo logic.
+- `assets/js/main.js` – Navigation enhancements, smooth scrolling, gradient builder logic, code-tab switching, and blog/design-system interactivity.
 - `assets/img/profile-placeholder.svg` – Placeholder illustration reused in visual mock-ups.
+
+## Highlights
+
+- Portfolio, blog, docs, launch, playground, and design-system sections share consistent spacing tokens and responsive grids.
+- Blog cards include topic filters to demonstrate client-side data manipulation without a framework.
+- Documentation panel showcases accessible tabbed code samples in multiple languages.
+- Playground gradient builder supports random palettes and one-click CSS copy.
+- Design system preview swaps between light and dark tokens with a theme toggle.
 
 ## Preview locally
 

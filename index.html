@@ -178,18 +178,24 @@
               taxonomy included.
             </p>
           </article>
+          <div class="post-filters" role="group" aria-label="Filter posts by topic">
+            <button type="button" class="post-filter is-active" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" class="post-filter" data-filter="strategy" aria-pressed="false">Strategy</button>
+            <button type="button" class="post-filter" data-filter="engineering" aria-pressed="false">Engineering</button>
+            <button type="button" class="post-filter" data-filter="community" aria-pressed="false">Community</button>
+          </div>
           <ul class="post-list">
-            <li>
+            <li data-topic="strategy">
               <span class="post-topic">Strategy</span>
               <span class="post-title">Designing learning loops for teams</span>
               <span class="post-meta">8 min read</span>
             </li>
-            <li>
+            <li data-topic="engineering">
               <span class="post-topic">Engineering</span>
               <span class="post-title">Automating docs with GitHub Actions</span>
               <span class="post-meta">12 min read</span>
             </li>
-            <li>
+            <li data-topic="community">
               <span class="post-topic">Community</span>
               <span class="post-title">Hosting remote salons</span>
               <span class="post-meta">5 min read</span>
@@ -234,9 +240,65 @@
               Install the CLI, authenticate with GitHub, and push your static build. Every merge to <code>main</code>
               publishes automatically.
             </p>
-            <pre><code>$ npm install -g pages-cli
+            <div class="code-tabs" role="tablist" aria-label="Deploy commands">
+              <button
+                type="button"
+                class="code-tab is-active"
+                id="tab-js"
+                role="tab"
+                aria-selected="true"
+                aria-controls="code-js"
+                data-target="code-js"
+              >
+                JavaScript
+              </button>
+              <button
+                type="button"
+                class="code-tab"
+                id="tab-py"
+                role="tab"
+                aria-selected="false"
+                aria-controls="code-py"
+                data-target="code-py"
+              >
+                Python
+              </button>
+              <button
+                type="button"
+                class="code-tab"
+                id="tab-cli"
+                role="tab"
+                aria-selected="false"
+                aria-controls="code-cli"
+                data-target="code-cli"
+              >
+                CLI
+              </button>
+            </div>
+            <div id="code-js" class="code-panel is-active" role="tabpanel" aria-labelledby="tab-js">
+              <pre><code>import { deploy } from '@pages/cli';
+
+deploy({
+  source: './dist',
+  branch: 'gh-pages',
+});
+</code></pre>
+            </div>
+            <div id="code-py" class="code-panel" role="tabpanel" aria-labelledby="tab-py">
+              <pre><code>from pages import deploy
+
+deploy(
+    source="./site",
+    branch="gh-pages",
+)
+</code></pre>
+            </div>
+            <div id="code-cli" class="code-panel" role="tabpanel" aria-labelledby="tab-cli">
+              <pre><code>$ npm install -g pages-cli
+$ pages login
 $ pages deploy
-            </code></pre>
+</code></pre>
+            </div>
             <div class="callout success">
               <strong>Tip:</strong> Automate docs previews with pull request environments.
             </div>
@@ -321,7 +383,11 @@ $ pages deploy
               <p>Perfect for hero backgrounds, call-to-action banners, and component cards.</p>
             </div>
           </div>
-          <pre class="playground-code"><code id="gradient-code">background: linear-gradient(135deg, #6366f1, #22d3ee);</code></pre>
+          <div class="playground-code">
+            <pre><code id="gradient-code">background: linear-gradient(135deg, #6366f1, #22d3ee);</code></pre>
+            <button type="button" class="copy-gradient">Copy CSS</button>
+            <span class="copy-feedback" role="status" aria-live="polite"></span>
+          </div>
         </div>
       </div>
     </section>
@@ -341,11 +407,15 @@ $ pages deploy
             <li>Automate publishing with every design system release.</li>
           </ul>
         </div>
-        <div class="feature-preview system-card" role="img" aria-label="Example design system documentation">
+        <div class="feature-preview system-card" data-theme="light" role="img" aria-label="Example design system documentation">
           <header>
             <h3>Northstar Design Kit</h3>
             <span>v4.1</span>
           </header>
+          <div class="system-controls" role="group" aria-label="Toggle theme preview">
+            <button type="button" class="theme-toggle is-active" data-theme="light" aria-pressed="true">Light</button>
+            <button type="button" class="theme-toggle" data-theme="dark" aria-pressed="false">Dark</button>
+          </div>
           <section class="token-grid">
             <div>
               <h4>Colors</h4>
