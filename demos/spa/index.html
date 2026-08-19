@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Client-side routing on GitHub Pages using the History API and a 404.html redirect shim." />
+  <title>SPA routing demo | Pages Lab</title>
+  <link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #4f46e5;
+      --border: rgba(15, 23, 42, 0.12);
+      --code-bg: rgba(99, 102, 241, 0.08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --surface: #131c31;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --primary: #a5b4fc;
+        --border: rgba(226, 232, 240, 0.14);
+        --code-bg: rgba(165, 180, 252, 0.12);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 4rem;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    .shell { width: min(100%, 46rem); margin: 0 auto; }
+    h1 { font-size: clamp(1.5rem, 4vw, 2rem); margin: 0 0 0.5rem; }
+    h2 { font-size: 1.15rem; margin: 0 0 0.5rem; }
+    p { color: var(--muted); }
+    code, .url {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--code-bg);
+      border-radius: 0.35rem;
+      padding: 0.1rem 0.4rem;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      padding: 0.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      width: fit-content;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--muted);
+      padding: 0.45rem 1rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    nav a[aria-current='page'] { background: var(--primary); color: #fff; }
+    nav a:hover:not([aria-current='page']) { background: var(--code-bg); color: var(--text); }
+    #view {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      min-height: 11rem;
+    }
+    #view:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+    .bar {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .back { display: inline-block; margin-bottom: 1.5rem; color: var(--primary); font-weight: 600; font-size: 0.9rem; }
+    ul.plain { padding-left: 1.1rem; color: var(--muted); }
+    .note {
+      margin-top: 2rem;
+      padding: 1.25rem;
+      border-left: 3px solid var(--primary);
+      background: var(--surface);
+      border-radius: 0 0.75rem 0.75rem 0;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <a class="back" href="../../index.html">&larr; Back to the playground</a>
+    <h1>Client-side routing, no server</h1>
+    <p>
+      Every link below changes the address bar without a page load. Deep links work too &mdash;
+      copy one and paste it into a new tab.
+    </p>
+
+    <nav id="router-nav" aria-label="Demo sections">
+      <a href="./" data-link>Home</a>
+      <a href="./tokens" data-link>Tokens</a>
+      <a href="./roadmap" data-link>Roadmap</a>
+      <a href="./changelog" data-link>Changelog</a>
+    </nav>
+
+    <main id="view" tabindex="-1" aria-live="polite"></main>
+
+    <div class="bar">
+      <span>Current URL:</span>
+      <span class="url" id="current-url">&nbsp;</span>
+      <span id="nav-count"></span>
+    </div>
+
+    <div class="note">
+      <h2>How the deep links survive a refresh</h2>
+      <p style="margin-top:0.5rem">
+        GitHub Pages has no rewrite rules, so a request for <code>/demos/spa/roadmap</code> finds no
+        file and falls through to <code>404.html</code>. That page reads the path, redirects to this
+        entry point with the route in a query string, and the router restores the real URL with
+        <code>history.replaceState()</code>. The visitor sees one brief redirect and the correct page.
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    /**
+     * A ~60 line router. The only Pages-specific part is the query-string
+     * handoff from 404.html; everything else is the plain History API.
+     */
+    const routes = {
+      '/': {
+        title: 'Home',
+        heading: 'Routing without a backend',
+        body: 'Three techniques combine here: the History API to change the URL, a click handler to intercept navigation, and a 404.html shim so deep links survive a hard refresh.',
+        points: [
+          'No page reload between routes.',
+          'The back and forward buttons work as expected.',
+          'Each route is independently shareable.',
+        ],
+      },
+      '/tokens': {
+        title: 'Tokens',
+        heading: 'Design tokens',
+        body: 'A route rendered entirely on the client from a plain JavaScript object. In a real app this is where you would fetch a static JSON file.',
+        points: ['--color-primary: #6366f1', '--color-accent: #22d3ee', '--radius-lg: 1rem'],
+      },
+      '/roadmap': {
+        title: 'Roadmap',
+        heading: 'What ships next',
+        body: 'Static hosting does not stop you building app-like navigation. It only stops you doing the routing on the server.',
+        points: ['Offline-first caching', 'Prebuilt search index', 'Component documentation'],
+      },
+      '/changelog': {
+        title: 'Changelog',
+        heading: 'Recent changes',
+        body: 'Try refreshing this page. The URL is a real path with no file behind it, so the redirect shim does its work and you land back here.',
+        points: ['Added the service worker', 'Added the WebAssembly demo', 'Added this router'],
+      },
+    };
+
+    const view = document.getElementById('view');
+    const urlLabel = document.getElementById('current-url');
+    const countLabel = document.getElementById('nav-count');
+    const links = Array.from(document.querySelectorAll('[data-link]'));
+
+    // The base path this demo is mounted at, derived rather than hardcoded so
+    // the same file works on a user page and a project page alike.
+    const BASE = new URL('./', window.location.href).pathname;
+
+    let navigations = 0;
+
+    // --- Step 1: recover a route handed over by 404.html ----------------------
+    const params = new URLSearchParams(window.location.search);
+    const handoff = params.get('spa-route');
+    if (handoff) {
+      params.delete('spa-route');
+      const rest = params.toString();
+      history.replaceState(
+        null,
+        '',
+        BASE.replace(/\/$/, '') + handoff + (rest ? `?${rest}` : '') + window.location.hash
+      );
+    }
+
+    function currentRoute() {
+      const path = window.location.pathname.slice(BASE.length);
+      const normalised = `/${path.replace(/^\/+|\/+$/g, '')}`;
+      return normalised === '/index.html' ? '/' : normalised;
+    }
+
+    function render({ pushFocus = false } = {}) {
+      const key = currentRoute();
+      const route = routes[key] || routes['/'];
+      const isKnown = Boolean(routes[key]);
+
+      document.title = `${route.title} | SPA routing demo`;
+
+      const heading = document.createElement('h2');
+      heading.textContent = isKnown ? route.heading : 'No such route';
+
+      const body = document.createElement('p');
+      body.textContent = isKnown
+        ? route.body
+        : `Nothing is registered for ${key}. A real app would render its own in-app 404 here.`;
+
+      const list = document.createElement('ul');
+      list.className = 'plain';
+      for (const point of isKnown ? route.points : []) {
+        const item = document.createElement('li');
+        item.textContent = point;
+        list.append(item);
+      }
+
+      view.replaceChildren(heading, body, list);
+
+      links.forEach((link) => {
+        const target = new URL(link.getAttribute('href'), window.location.href).pathname;
+        const linkRoute = `/${target.slice(BASE.length).replace(/^\/+|\/+$/g, '')}`;
+        if (linkRoute === key) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+
+      urlLabel.textContent = window.location.pathname + window.location.search;
+      countLabel.textContent = navigations ? `· ${navigations} client-side navigations, 0 page loads` : '';
+
+      // Move focus to the new content so screen reader users are not left
+      // behind at the link they just activated.
+      if (pushFocus) view.focus();
+    }
+
+    // --- Step 2: intercept in-app links --------------------------------------
+    links.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        // Let modified clicks (new tab, download) behave normally.
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+        event.preventDefault();
+        const href = new URL(link.getAttribute('href'), window.location.href);
+        if (href.pathname === window.location.pathname) return;
+        navigations += 1;
+        history.pushState(null, '', href.pathname);
+        render({ pushFocus: true });
+      });
+    });
+
+    // --- Step 3: respond to the back and forward buttons ---------------------
+    window.addEventListener('popstate', () => render({ pushFocus: true }));
+
+    render();
+  </script>
+</body>
+</html>

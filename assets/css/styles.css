@@ -16,6 +16,9 @@
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --max-width: 1120px;
+  --page-backdrop: radial-gradient(circle at 0% -10%, rgba(99, 102, 241, 0.18), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.12), transparent 45%),
+    linear-gradient(180deg, #ffffff 0%, #eef2ff 80%, #e0f2fe 100%);
   background: var(--color-bg);
 }
 
@@ -26,9 +29,7 @@
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background: radial-gradient(circle at 0% -10%, rgba(99, 102, 241, 0.18), transparent 55%),
-    radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.12), transparent 45%),
-    linear-gradient(180deg, #ffffff 0%, #eef2ff 80%, #e0f2fe 100%);
+  background: var(--page-backdrop);
   color: var(--color-text);
   line-height: 1.6;
   min-height: 100vh;
@@ -1048,7 +1049,7 @@ button {
     transition: opacity 180ms ease, transform 180ms ease;
   }
 
-  .main-nav ul[aria-expanded='true'] {
+  .main-nav ul[data-open='true'] {
     opacity: 1;
     visibility: visible;
     transform: scale(1);
@@ -1095,4 +1096,465 @@ button {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ==========================================================================
+   Site-wide theming
+   --------------------------------------------------------------------------
+   Two selectors cover all three states:
+     - :root[data-theme='dark']            an explicit choice, set by theme.js
+     - prefers-color-scheme, guarded by
+       :not([data-theme='light'])          the system default, before JS runs
+   The guard is what stops the media query from overriding a visitor who has
+   deliberately chosen light.
+   ========================================================================== */
+:root[data-theme='dark'],
+:root:not([data-theme='light']) {
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --color-bg: #0b1120;
+    --color-surface: #131c31;
+    --color-surface-alt: #1b2540;
+    --color-primary: #a5b4fc;
+    --color-primary-dark: #c7d2fe;
+    --color-accent: #67e8f9;
+    --color-text: #e2e8f0;
+    --color-muted: #94a3b8;
+    --color-border: rgba(226, 232, 240, 0.12);
+    --color-border-strong: rgba(226, 232, 240, 0.22);
+    --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.6), 0 4px 14px rgba(2, 6, 23, 0.45);
+    --shadow-lg: 0 12px 34px rgba(2, 6, 23, 0.55);
+    --page-backdrop: radial-gradient(circle at 0% -10%, rgba(99, 102, 241, 0.22), transparent 55%),
+      radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.14), transparent 45%),
+      linear-gradient(180deg, #0b1120 0%, #101a30 70%, #0b1729 100%);
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-bg: #0b1120;
+  --color-surface: #131c31;
+  --color-surface-alt: #1b2540;
+  --color-primary: #a5b4fc;
+  --color-primary-dark: #c7d2fe;
+  --color-accent: #67e8f9;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-border: rgba(226, 232, 240, 0.12);
+  --color-border-strong: rgba(226, 232, 240, 0.22);
+  --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.6), 0 4px 14px rgba(2, 6, 23, 0.45);
+  --shadow-lg: 0 12px 34px rgba(2, 6, 23, 0.55);
+  --page-backdrop: radial-gradient(circle at 0% -10%, rgba(99, 102, 241, 0.22), transparent 55%),
+    radial-gradient(circle at 100% 0%, rgba(14, 165, 233, 0.14), transparent 45%),
+    linear-gradient(180deg, #0b1120 0%, #101a30 70%, #0b1729 100%);
+}
+
+/* The site header is translucent; it needs the surface colour, not white. */
+:root[data-theme='dark'] .site-header,
+:root[data-theme='dark'] .hero-visual-card {
+  background: rgba(19, 28, 49, 0.86);
+}
+
+/* View Transitions: cross-fade the whole document on a theme change. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 260ms;
+}
+
+/* --- Theme switcher ------------------------------------------------------ */
+.theme-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.2rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+}
+
+.theme-switcher button {
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.theme-switcher button.is-active {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.theme-switcher button:hover:not(.is-active),
+.theme-switcher button:focus-visible {
+  color: var(--color-text);
+  background: var(--color-surface-alt);
+}
+
+/* --- Scroll reveal ------------------------------------------------------- */
+/* Scoped to .js so a no-script visitor never meets an invisible page. */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 620ms ease, transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* --- Nav scroll spy ------------------------------------------------------ */
+.main-nav a[aria-current='true'] {
+  color: var(--color-primary-dark);
+}
+
+.main-nav a[aria-current='true']::after {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   Demo panels added for the capabilities tour
+   ========================================================================== */
+
+.demo-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1.1rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.demo-panel h3 {
+  font-family: var(--font-display);
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.demo-panel > p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+.demo-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+}
+
+.status-line {
+  display: block;
+  margin-top: 0.85rem;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+  min-height: 1.2em;
+}
+
+/* --- Search -------------------------------------------------------------- */
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.search-box input:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.search-results {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0.3rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 0.75rem;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  max-height: 19rem;
+  overflow-y: auto;
+  position: absolute;
+  inset-inline: 0;
+  z-index: 20;
+}
+
+.search-results[hidden] {
+  display: none;
+}
+
+.search-results li {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 0.55rem;
+  cursor: pointer;
+}
+
+.search-results li.is-active,
+.search-results li:hover {
+  background: var(--color-surface-alt);
+}
+
+.search-result-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+
+.search-result-summary,
+.search-result-meta {
+  font-size: 0.78rem;
+  color: var(--color-muted);
+}
+
+.search-result-meta {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+.search-results mark {
+  background: rgba(99, 102, 241, 0.24);
+  color: inherit;
+  border-radius: 0.2rem;
+  padding: 0 0.1rem;
+}
+
+.search-empty {
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  cursor: default;
+}
+
+/* Flash a post when a search result points at it. */
+.post-list li.is-flashed {
+  animation: flash 1.6s ease;
+}
+
+@keyframes flash {
+  0%, 100% { background: transparent; }
+  25% { background: rgba(99, 102, 241, 0.22); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-list li.is-flashed { animation: none; outline: 2px solid var(--color-primary); }
+}
+
+/* --- Canvas -------------------------------------------------------------- */
+.canvas-frame {
+  border-radius: 0.85rem;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+}
+
+.canvas-frame canvas {
+  display: block;
+  width: 100%;
+  height: 240px;
+}
+
+/* --- WebAssembly output -------------------------------------------------- */
+.wasm-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.wasm-controls label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.wasm-controls input {
+  width: 6rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.6rem;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.wasm-output {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 1rem;
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.wasm-output dt {
+  color: var(--color-muted);
+}
+
+.wasm-output dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.wasm-output:empty::after {
+  content: 'Run the module to see its exports and timings.';
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  grid-column: 1 / -1;
+}
+
+/* --- PWA ----------------------------------------------------------------- */
+.pwa-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.connection-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border: 1px solid var(--color-border-strong);
+}
+
+.connection-pill::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.connection-pill[data-state='online'] { color: var(--color-success); }
+.connection-pill[data-state='offline'] { color: #f97316; }
+
+.update-banner {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border-strong);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.update-banner[hidden] { display: none; }
+
+/* --- Token swatch grid (web component) ----------------------------------- */
+.swatch-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+}
+
+/* --- Capability reference tables ----------------------------------------- */
+.capability-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 0.9rem;
+  background: var(--color-surface);
+}
+
+.capability-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  min-width: 34rem;
+}
+
+.capability-table th,
+.capability-table td {
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.capability-table thead th {
+  background: var(--color-surface-alt);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.capability-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.capability-table code {
+  font-size: 0.82em;
+  background: var(--color-surface-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.3rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge.yes { background: rgba(16, 185, 129, 0.16); color: #047857; }
+.badge.no { background: rgba(220, 38, 38, 0.14); color: #b91c1c; }
+.badge.partial { background: rgba(245, 158, 11, 0.18); color: #b45309; }
+
+:root[data-theme='dark'] .badge.yes { color: #6ee7b7; }
+:root[data-theme='dark'] .badge.no { color: #fca5a5; }
+:root[data-theme='dark'] .badge.partial { color: #fcd34d; }
+
+.btn.ghost {
+  background: transparent;
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn.ghost:hover,
+.btn.ghost:focus-visible {
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
 }

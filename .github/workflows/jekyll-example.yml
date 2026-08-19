@@ -1,0 +1,70 @@
+# ---------------------------------------------------------------------------
+# Build the Jekyll starter in examples/jekyll/.
+#
+# Deliberately manual (`workflow_dispatch` only). It exists to prove the example
+# compiles and to show what a Jekyll-via-Actions pipeline looks like, without
+# ever competing with deploy.yml for the live site.
+#
+# Building Jekyll here rather than through the built-in Pages pipeline is what
+# lifts the plugin allowlist: any gem in the Gemfile is fair game.
+# ---------------------------------------------------------------------------
+name: Build the Jekyll example
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'examples/jekyll/**'
+      - '.github/workflows/jekyll-example.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: examples/jekyll
+
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+          working-directory: examples/jekyll
+
+      # --baseurl '' overrides _config.yml so the smoke test below can check
+      # root-relative output rather than the project-page subpath.
+      - name: Build
+        run: bundle exec jekyll build --baseurl '' --trace
+
+      - name: Smoke-test the output
+        run: |
+          set -e
+          for file in _site/index.html _site/feed.xml _site/sitemap.xml; do
+            test -s "$file" || { echo "::error::missing or empty: $file"; exit 1; }
+            echo "ok: $file"
+          done
+
+          # jekyll-redirect-from should have generated the stub declared in the
+          # post's front matter.
+          test -s _site/old-docs-post/index.html \
+            || { echo "::error::jekyll-redirect-from produced no stub"; exit 1; }
+          echo "ok: redirect stub"
+
+          # jekyll-seo-tag should have injected Open Graph metadata.
+          grep -q 'og:title' _site/index.html \
+            || { echo "::error::jekyll-seo-tag produced no Open Graph tags"; exit 1; }
+          echo "ok: seo tags"
+
+      - name: Upload the built site
+        uses: actions/upload-artifact@v4
+        with:
+          name: jekyll-example-site
+          path: examples/jekyll/_site
+          retention-days: 7

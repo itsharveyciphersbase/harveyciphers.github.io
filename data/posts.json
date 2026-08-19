@@ -1,0 +1,78 @@
+{
+  "generated": "2026-08-18",
+  "note": "Static JSON served by GitHub Pages. Fetched at runtime by assets/js/modules/blog.js — proof that 'static host' does not mean 'hardcoded markup'.",
+  "posts": [
+    {
+      "id": "pwa-on-pages",
+      "title": "Shipping a progressive web app from a static host",
+      "topic": "engineering",
+      "date": "2026-08-18",
+      "readingMinutes": 9,
+      "summary": "A manifest and a service worker are just files. Together they make a Pages site installable and fully offline-capable.",
+      "tags": ["pwa", "service worker", "offline", "manifest"]
+    },
+    {
+      "id": "actions-docs",
+      "title": "Automating docs with GitHub Actions",
+      "topic": "engineering",
+      "date": "2026-07-02",
+      "readingMinutes": 12,
+      "summary": "Deploying with actions/deploy-pages escapes the built-in Jekyll pipeline and its sixteen-plugin allowlist.",
+      "tags": ["actions", "ci", "jekyll", "build"]
+    },
+    {
+      "id": "learning-loops",
+      "title": "Designing learning loops for teams",
+      "topic": "strategy",
+      "date": "2026-05-19",
+      "readingMinutes": 8,
+      "summary": "Feedback cadences that survive reorgs, and how to instrument them without standing up a backend.",
+      "tags": ["teams", "feedback", "rituals"]
+    },
+    {
+      "id": "wasm-static",
+      "title": "WebAssembly needs no server either",
+      "topic": "engineering",
+      "date": "2026-04-11",
+      "readingMinutes": 6,
+      "summary": "A .wasm binary is a static asset. Compile once, commit it, and instantiate it in the browser.",
+      "tags": ["wasm", "performance", "binary"]
+    },
+    {
+      "id": "remote-salons",
+      "title": "Hosting remote salons",
+      "topic": "community",
+      "date": "2026-03-02",
+      "readingMinutes": 5,
+      "summary": "Small, recurring, deliberately unpolished gatherings beat another conference talk.",
+      "tags": ["community", "events", "writing"]
+    },
+    {
+      "id": "search-without-a-backend",
+      "title": "Full-text search without a backend",
+      "topic": "engineering",
+      "date": "2026-02-14",
+      "readingMinutes": 7,
+      "summary": "Ship a prebuilt index alongside the pages and let the browser do the querying.",
+      "tags": ["search", "index", "json", "offline"]
+    },
+    {
+      "id": "brand-systems",
+      "title": "A design system is a shared vocabulary",
+      "topic": "strategy",
+      "date": "2026-01-20",
+      "readingMinutes": 10,
+      "summary": "Tokens matter less than the agreement they encode. Document the agreement first.",
+      "tags": ["design system", "tokens", "documentation"]
+    },
+    {
+      "id": "writing-in-public",
+      "title": "Writing in public, quietly",
+      "topic": "community",
+      "date": "2025-12-05",
+      "readingMinutes": 4,
+      "summary": "You do not need an audience to benefit from publishing. You need a habit.",
+      "tags": ["writing", "habits", "blogging"]
+    }
+  ]
+}

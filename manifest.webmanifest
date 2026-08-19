@@ -1,0 +1,50 @@
+{
+  "name": "GitHub Pages Playground",
+  "short_name": "Pages Lab",
+  "description": "A tour of everything you can ship on GitHub Pages without a server.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#f5f7fb",
+  "theme_color": "#6366f1",
+  "orientation": "any",
+  "categories": ["education", "developer", "productivity"],
+  "icons": [
+    {
+      "src": "assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/img/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "assets/img/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Platform capabilities",
+      "url": "capabilities.html",
+      "description": "What GitHub Pages can and cannot do"
+    },
+    {
+      "name": "Interactive playground",
+      "url": "index.html#playground",
+      "description": "Gradient builder, canvas, and WebAssembly demos"
+    }
+  ]
+}

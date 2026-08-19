@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="What GitHub Pages can host, what it refuses to do, and the gotchas that catch people out — with a live demo behind each claim."
+  />
+  <title>Platform capabilities | Pages Lab</title>
+
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             script-src 'self' 'wasm-unsafe-eval';
+             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+             font-src 'self' https://fonts.gstatic.com;
+             img-src 'self' data:;
+             connect-src 'self';
+             base-uri 'self';
+             form-action 'none'"
+  />
+
+  <link rel="canonical" href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/capabilities.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="GitHub Pages capabilities and limits" />
+  <meta property="og:description" content="The capability matrix, the hard limits, and the gotchas — each with a working demo." />
+  <meta property="og:url" content="https://itsharveyciphersbase.github.io/harveyciphers.github.io/capabilities.html" />
+  <meta property="og:image" content="https://itsharveyciphersbase.github.io/harveyciphers.github.io/assets/img/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#6366f1" />
+  <link rel="alternate" type="application/atom+xml" title="Pages Lab" href="feed.xml" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/theme-init.js"></script>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <div class="container header-content">
+      <a class="logo" href="index.html" aria-label="Pages Lab home">Pages Lab</a>
+      <nav class="main-nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+          <span class="sr-only">Toggle navigation</span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <ul id="nav-menu">
+          <li><a href="#build">Build</a></li>
+          <li><a href="#matrix">Matrix</a></li>
+          <li><a href="#thirdparty">Third party</a></li>
+          <li><a href="#limits">Limits</a></li>
+          <li><a href="#gotchas">Gotchas</a></li>
+          <li><a href="index.html">Playground</a></li>
+        </ul>
+      </nav>
+      <div class="theme-switcher" role="group" aria-label="Colour theme">
+        <button type="button" data-theme-mode="system">Auto</button>
+        <button type="button" data-theme-mode="light">Light</button>
+        <button type="button" data-theme-mode="dark">Dark</button>
+      </div>
+      <a class="cta" href="index.html">Back to the demos</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">Platform reference</p>
+        <h1 style="max-width:22ch">What the platform actually gives you.</h1>
+        <p class="lead" style="max-width:65ch">
+          GitHub Pages is a static file host with a Jekyll build attached. Almost every
+          &ldquo;can Pages do X?&rdquo; question resolves to one of three answers: yes because the
+          browser does it, yes because a build step does it, or no because it needs a server.
+          This page sorts them out.
+        </p>
+        <p class="status-line" data-theme-status></p>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section class="section" id="build" aria-labelledby="build-title">
+      <div class="container">
+        <p class="eyebrow">Build pipelines</p>
+        <h2 id="build-title">Three ways to publish</h2>
+        <p style="max-width:65ch;color:var(--color-muted)">
+          The choice of pipeline decides which tools you can use. It is the single most
+          consequential decision in a Pages setup, and it is reversible.
+        </p>
+
+        <div class="demo-grid" style="margin-top:1.75rem">
+          <div class="demo-panel">
+            <h3>1. Plain static files</h3>
+            <p>
+              Commit HTML, CSS, and JS; Pages serves them. Add <code>.nojekyll</code> to skip the
+              build entirely &mdash; required the moment any directory starts with an underscore,
+              which is why Next.js output (<code>_next/</code>) silently breaks without it.
+            </p>
+            <p style="margin:0"><strong>This repository uses this mode.</strong></p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>2. Built-in Jekyll</h3>
+            <p>
+              Push Markdown and Pages builds it. No workflow file, no build minutes. The cost is
+              the plugin allowlist: roughly sixteen plugins are permitted and
+              <code>Gemfile</code> additions are ignored.
+            </p>
+            <p style="margin:0">
+              Copy-paste starter: <code>examples/jekyll/</code> in this repository.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>3. GitHub Actions</h3>
+            <p>
+              Build with anything &mdash; Astro, Eleventy, Hugo, Vite, a static Next export, or
+              Jekyll with unrestricted plugins &mdash; then publish the output with
+              <code>actions/deploy-pages</code>.
+            </p>
+            <p style="margin:0">
+              Workflows: <code>.github/workflows/</code> in this repository.
+            </p>
+          </div>
+        </div>
+
+        <div class="capability-table-wrap" style="margin-top:1.75rem">
+          <table class="capability-table">
+            <caption class="sr-only">Comparison of the three publishing pipelines</caption>
+            <thead>
+              <tr>
+                <th scope="col">Pipeline</th>
+                <th scope="col">Build minutes</th>
+                <th scope="col">Tooling</th>
+                <th scope="col">Best for</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Static files</td>
+                <td><span class="badge yes">None used</span></td>
+                <td>Whatever runs in the browser</td>
+                <td>Hand-written sites, prebuilt output committed to the repo</td>
+              </tr>
+              <tr>
+                <td>Built-in Jekyll</td>
+                <td><span class="badge yes">None used</span></td>
+                <td><span class="badge partial">Allowlist only</span></td>
+                <td>Markdown blogs and docs with zero configuration</td>
+              </tr>
+              <tr>
+                <td>GitHub Actions</td>
+                <td><span class="badge partial">Consumes quota</span></td>
+                <td><span class="badge yes">Anything</span></td>
+                <td>Modern SSGs, custom pipelines, unrestricted plugins</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section class="section alt" id="matrix" aria-labelledby="matrix-title">
+      <div class="container">
+        <p class="eyebrow">Capability matrix</p>
+        <h2 id="matrix-title">Can Pages do it?</h2>
+        <p style="max-width:65ch;color:var(--color-muted)">
+          Every row marked <span class="badge yes">Yes</span> is demonstrated live in this
+          repository, not asserted. Follow the link and watch it work.
+        </p>
+
+        <div class="capability-table-wrap" style="margin-top:1.75rem">
+          <table class="capability-table">
+            <caption class="sr-only">GitHub Pages capability matrix with links to live demos</caption>
+            <thead>
+              <tr>
+                <th scope="col">Capability</th>
+                <th scope="col">Available</th>
+                <th scope="col">How, and where it is demonstrated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Custom 404 page</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>A <code>404.html</code> at the root. Served for every unmatched path.</td>
+              </tr>
+              <tr>
+                <th scope="row">Client-side routing</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>History API plus a 404 redirect shim &mdash; <a href="demos/spa/">SPA demo</a>.</td>
+              </tr>
+              <tr>
+                <th scope="row">Installable app, offline</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>
+                  <code>manifest.webmanifest</code> and <code>sw.js</code>, both static files.
+                  Needs HTTPS, which Pages always provides.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Data-driven pages</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>
+                  <code>fetch()</code> a committed JSON file &mdash; the blog list on the
+                  <a href="index.html#blog">home page</a> is built this way.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Full-text search</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>
+                  Ship a prebuilt index and query it in the browser
+                  (<a href="index.html#blog">try it</a>). Pagefind and Lunr scale this up.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">WebAssembly</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>
+                  A <code>.wasm</code> file is a static asset
+                  (<a href="index.html#playground">run it</a>). Remember
+                  <code>'wasm-unsafe-eval'</code> if you ship a CSP.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">RSS / Atom feed</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>A static <a href="feed.xml">feed.xml</a>; <code>jekyll-feed</code> generates it from posts.</td>
+              </tr>
+              <tr>
+                <th scope="row">Sitemap, robots.txt</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td><a href="sitemap.xml">sitemap.xml</a> and <a href="robots.txt">robots.txt</a> are plain files.</td>
+              </tr>
+              <tr>
+                <th scope="row">Custom domain, HTTPS</th>
+                <td><span class="badge yes">Yes</span></td>
+                <td>
+                  A <code>CNAME</code> file plus DNS. Certificates are issued and renewed
+                  automatically. See <code>CNAME.example</code>.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Forms</th>
+                <td><span class="badge partial">Third party</span></td>
+                <td>
+                  Post to an external endpoint (Formspree, Basin, a Google Form). Pages itself
+                  accepts no input.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Comments</th>
+                <td><span class="badge partial">Third party</span></td>
+                <td>
+                  Giscus or Utterances, backed by GitHub Discussions or Issues &mdash; a natural
+                  fit for a repo-hosted blog.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Redirects</th>
+                <td><span class="badge partial">Meta refresh</span></td>
+                <td>
+                  No <code>301</code> is possible. <a href="demos/redirect-from/old-url.html">Stub
+                  page demo</a>; <code>jekyll-redirect-from</code> automates it.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Content Security Policy</th>
+                <td><span class="badge partial">Weakened</span></td>
+                <td>
+                  <code>&lt;meta http-equiv&gt;</code> only. <code>frame-ancestors</code>,
+                  <code>report-uri</code>, and report-only mode are all ignored in meta form.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Server-side rendering</th>
+                <td><span class="badge no">No</span></td>
+                <td>No runtime executes on the host. Prerender at build time instead.</td>
+              </tr>
+              <tr>
+                <th scope="row">Databases, APIs, secrets</th>
+                <td><span class="badge no">No</span></td>
+                <td>
+                  Anything you ship is public, including keys in a JS bundle. Put the secret
+                  behind someone else's API.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Authentication</th>
+                <td><span class="badge no">No</span></td>
+                <td>
+                  Published sites are public even from a private repo. Access control needs
+                  GitHub Enterprise Cloud.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Custom HTTP headers</th>
+                <td><span class="badge no">No</span></td>
+                <td>
+                  No HSTS, CORS, cache-control, or <code>X-Frame-Options</code> of your own. This
+                  is the single biggest limitation in practice.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section class="section" id="thirdparty" aria-labelledby="thirdparty-title">
+      <div class="container">
+        <p class="eyebrow">Third-party glue</p>
+        <h2 id="thirdparty-title">Where a backend is unavoidable</h2>
+        <p style="max-width:65ch;color:var(--color-muted)">
+          Two things genuinely need a server: accepting input and storing it. The static answer is
+          to borrow someone else&rsquo;s. These snippets are shown rather than wired up &mdash; both
+          need an account and an endpoint of your own, and this page&rsquo;s
+          <code>form-action &#39;none&#39;</code> policy would block a live submission anyway.
+        </p>
+
+        <div class="demo-grid" style="margin-top:1.75rem">
+          <div class="demo-panel">
+            <h3>Forms</h3>
+            <p>
+              Point a normal <code>&lt;form&gt;</code> at a form-relay service. No JavaScript is
+              required, and it degrades gracefully.
+            </p>
+            <pre><code id="form-snippet">&lt;form action="https://formspree.io/f/YOUR_ID" method="POST"&gt;
+  &lt;label for="email"&gt;Email&lt;/label&gt;
+  &lt;input id="email" type="email" name="email" required /&gt;
+
+  &lt;label for="message"&gt;Message&lt;/label&gt;
+  &lt;textarea id="message" name="message" required&gt;&lt;/textarea&gt;
+
+  &lt;button type="submit"&gt;Send&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+            <copy-button for="form-snippet" label="Copy form markup"></copy-button>
+            <p class="status-line">
+              Remember to relax <code>form-action</code> in your CSP to the relay&rsquo;s origin.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>Comments</h3>
+            <p>
+              Giscus stores each thread as a GitHub Discussion, so a repo-hosted blog keeps its
+              comments in the same repository as its posts &mdash; no third-party database.
+            </p>
+            <pre><code id="giscus-snippet">&lt;script src="https://giscus.app/client.js"
+  data-repo="OWNER/REPO"
+  data-repo-id="YOUR_REPO_ID"
+  data-category="Announcements"
+  data-category-id="YOUR_CATEGORY_ID"
+  data-mapping="pathname"
+  data-theme="preferred_color_scheme"
+  crossorigin="anonymous"
+  async&gt;
+&lt;/script&gt;</code></pre>
+            <copy-button for="giscus-snippet" label="Copy giscus embed"></copy-button>
+            <p class="status-line">
+              Requires Discussions enabled on the repo and the giscus app installed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section class="section" id="limits" aria-labelledby="limits-title">
+      <div class="container">
+        <p class="eyebrow">Hard limits</p>
+        <h2 id="limits-title">The published quotas</h2>
+        <p style="max-width:65ch;color:var(--color-muted)">
+          These are soft in the sense that GitHub contacts you rather than cutting you off, but
+          they are the documented ceilings. Check the official docs before designing around a
+          number &mdash; they do change.
+        </p>
+
+        <div class="capability-table-wrap" style="margin-top:1.75rem">
+          <table class="capability-table">
+            <caption class="sr-only">Published GitHub Pages limits</caption>
+            <thead>
+              <tr>
+                <th scope="col">Limit</th>
+                <th scope="col">Value</th>
+                <th scope="col">What it means in practice</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Published site size</th>
+                <td>1 GB</td>
+                <td>Generous for a site; restrictive if you are hosting video or large datasets.</td>
+              </tr>
+              <tr>
+                <th scope="row">Bandwidth</th>
+                <td>100 GB / month</td>
+                <td>A soft limit. Sustained overage earns an email, not an outage.</td>
+              </tr>
+              <tr>
+                <th scope="row">Builds</th>
+                <td>10 per hour</td>
+                <td>
+                  Applies to the built-in Jekyll pipeline. Actions-based deploys are governed by
+                  your Actions quota instead.
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">Deployment timeout</th>
+                <td>10 minutes</td>
+                <td>A build that exceeds it fails. Large sites should prebuild in Actions.</td>
+              </tr>
+              <tr>
+                <th scope="row">Intended use</th>
+                <td>Not for commerce</td>
+                <td>
+                  The terms exclude running an online business or a commercial transaction site.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <section class="section alt" id="gotchas" aria-labelledby="gotchas-title">
+      <div class="container">
+        <p class="eyebrow">Gotchas</p>
+        <h2 id="gotchas-title">The things that actually break</h2>
+
+        <div class="demo-grid" style="margin-top:1.75rem">
+          <div class="demo-panel">
+            <h3>Project pages have a path prefix</h3>
+            <p>
+              A repository named <code>&lt;owner&gt;.github.io</code> serves at the domain root. Every
+              other repository serves at <code>/&lt;repo&gt;/</code>, so every root-absolute URL
+              (<code>/assets/app.css</code>) breaks.
+            </p>
+            <p>
+              <strong>This repository is a live example.</strong> It is named
+              <code>harveyciphers.github.io</code> but owned by
+              <code>itsharveyciphersbase</code>, and the two do not match &mdash; so it is a project
+              page served from a subpath, not a user page. Everything here uses relative URLs for
+              exactly that reason.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>Underscores disappear</h3>
+            <p>
+              Without <code>.nojekyll</code>, the Jekyll build strips directories beginning with an
+              underscore. Next.js emits <code>_next/</code>, so the site deploys successfully and
+              then loads nothing at all &mdash; a uniquely confusing failure.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>The CNAME file gets overwritten</h3>
+            <p>
+              Setting a custom domain in the repository settings commits a <code>CNAME</code> file.
+              A deploy that publishes a build directory without it silently drops your domain. Copy
+              it into the output, or set it in the workflow.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>URLs are case sensitive</h3>
+            <p>
+              Pages serves from a case-sensitive filesystem. A link to
+              <code>/About.html</code> for a file named <code>about.html</code> works on a Windows
+              or macOS dev machine and 404s in production.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>Service workers outlive your patience</h3>
+            <p>
+              A cached service worker keeps serving the old site after you deploy. Version your
+              caches, clean up on <code>activate</code>, and give visitors an explicit update
+              prompt &mdash; the pattern in <code>sw.js</code> and
+              <code>modules/pwa.js</code> here.
+            </p>
+          </div>
+
+          <div class="demo-panel">
+            <h3>Everything is public</h3>
+            <p>
+              A private repository can publish a public Pages site. Nothing in the repo is
+              protected by the repo being private: API keys in a bundle, draft posts, and
+              commented-out content all ship.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="next-title">
+      <div class="container" style="text-align:center">
+        <h2 id="next-title">See it running</h2>
+        <p style="color:var(--color-muted);max-width:55ch;margin-inline:auto">
+          Every capability above has working code in this repository. The README maps each claim
+          to the file that backs it.
+        </p>
+        <p style="margin-top:1.5rem">
+          <a class="btn primary" href="index.html">Back to the playground</a>
+          <a class="btn secondary" href="demos/spa/">Open the SPA demo</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <p class="logo">Pages Lab</p>
+        <p>
+          A reference for what a static host can and cannot do, with a live demo behind every
+          claim.
+        </p>
+      </div>
+      <div class="footer-meta">
+        <a href="https://docs.github.com/en/pages" target="_blank" rel="noopener">Official docs</a>
+        <a href="index.html">Playground</a>
+        <a href="#top">Back to top</a>
+      </div>
+      <p class="footer-copy">&copy; <span id="year"></span> Harvey Ciphers. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>404 — Page not found | Pages Lab</title>
+  <!--
+    GitHub Pages serves this file for ANY unmatched path, at that path.
+    Relative URLs (assets/css/...) would therefore resolve against the wrong
+    directory, so this page is deliberately self-contained: styles inline,
+    no external requests.
+  -->
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --primary: #4f46e5;
+      --border: rgba(15, 23, 42, 0.12);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1120;
+        --surface: #131c31;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --primary: #a5b4fc;
+        --border: rgba(226, 232, 240, 0.14);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    main {
+      width: min(100%, 34rem);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: clamp(1.75rem, 5vw, 3rem);
+      box-shadow: 0 12px 34px rgba(15, 23, 42, 0.12);
+    }
+    .code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin: 0 0 0.75rem;
+    }
+    h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); margin: 0 0 0.75rem; line-height: 1.2; }
+    p { color: var(--muted); margin: 0 0 1rem; }
+    .path {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 0.85rem;
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.7rem;
+      word-break: break-all;
+      display: block;
+      color: var(--text);
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.5rem; }
+    a.btn {
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 0.6rem 1.3rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+    a.btn.primary { background: var(--primary); color: #fff; }
+    a.btn:hover, a.btn:focus-visible { opacity: 0.85; }
+    .note {
+      margin-top: 1.75rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="code">Error 404</p>
+    <h1>That page isn&rsquo;t here.</h1>
+    <p>GitHub Pages served this file because nothing matched the requested path:</p>
+    <code class="path" id="requested-path">&nbsp;</code>
+    <div class="actions">
+      <a class="btn primary" id="home-link" href="/">Back to the playground</a>
+      <a class="btn" id="caps-link" href="/capabilities.html">Platform capabilities</a>
+    </div>
+    <p class="note">
+      A static host has no server-side routing, so a custom <code>404.html</code> is the only
+      catch-all available &mdash; and it doubles as the redirect shim that makes client-side
+      routing work. See the SPA demo for how that trick is wired.
+    </p>
+  </main>
+
+  <script>
+    (function () {
+      var path = window.location.pathname;
+      var search = window.location.search;
+      var hash = window.location.hash;
+
+      // Derive the site base so this page works both as a user page
+      // (owner.github.io) and as a project page (owner.github.io/repo/).
+      var marker = '/demos/spa/';
+      var markerIndex = path.indexOf(marker);
+      var base = markerIndex > -1 ? path.slice(0, markerIndex) : '';
+
+      if (markerIndex === -1) {
+        // Best-effort base detection for a project page: keep the first segment
+        // when it looks like a repository name rather than a file.
+        var segments = path.split('/').filter(Boolean);
+        if (segments.length && segments[0].indexOf('.') > -1 && segments[0] !== '404.html') {
+          base = '/' + segments[0];
+        }
+      }
+
+      // --- SPA redirect shim -------------------------------------------------
+      // A deep link such as /demos/spa/settings has no file behind it. Encode the
+      // route into a query parameter and hand control to the SPA entry point,
+      // which restores the real URL with history.replaceState().
+      if (markerIndex > -1) {
+        var route = path.slice(markerIndex + marker.length);
+        if (route && route !== 'index.html') {
+          var target =
+            base + marker + '?spa-route=/' + route.replace(/^\/+/, '') +
+            (search ? '&' + search.slice(1) : '') + hash;
+          window.location.replace(target);
+          return;
+        }
+      }
+
+      var pathEl = document.getElementById('requested-path');
+      if (pathEl) {
+        pathEl.textContent = path + search + hash;
+      }
+      document.getElementById('home-link').setAttribute('href', (base || '') + '/');
+      document.getElementById('caps-link').setAttribute('href', (base || '') + '/capabilities.html');
+    })();
+  </script>
+</body>
+</html>

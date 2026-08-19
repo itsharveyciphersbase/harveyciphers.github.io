@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A static Atom feed. GitHub Pages serves this as-is; nothing generates it at
+  request time. The `jekyll-feed` plugin builds the same document from _posts.
+  Discovered by readers through the <link rel="alternate"> tag in index.html.
+-->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Pages Lab</title>
+  <subtitle>Notes from the GitHub Pages Playground</subtitle>
+  <id>https://itsharveyciphersbase.github.io/harveyciphers.github.io/</id>
+  <link href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/" />
+  <link rel="self" href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/feed.xml" />
+  <updated>2026-08-18T00:00:00Z</updated>
+  <author><name>Harvey Ciphers</name></author>
+
+  <entry>
+    <title>Shipping a progressive web app from a static host</title>
+    <id>tag:harveyciphers.github.io,2026:/posts/pwa-on-pages</id>
+    <link href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/#blog" />
+    <updated>2026-08-18T00:00:00Z</updated>
+    <category term="engineering" />
+    <summary>A manifest and a service worker are static files, so an installable, offline-capable app needs no server at all.</summary>
+  </entry>
+  <entry>
+    <title>Automating docs with GitHub Actions</title>
+    <id>tag:harveyciphers.github.io,2026:/posts/actions-docs</id>
+    <link href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/#blog" />
+    <updated>2026-07-02T00:00:00Z</updated>
+    <category term="engineering" />
+    <summary>Deploying with actions/deploy-pages frees you from the built-in Jekyll pipeline and its plugin allowlist.</summary>
+  </entry>
+  <entry>
+    <title>Designing learning loops for teams</title>
+    <id>tag:harveyciphers.github.io,2026:/posts/learning-loops</id>
+    <link href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/#blog" />
+    <updated>2026-05-19T00:00:00Z</updated>
+    <category term="strategy" />
+    <summary>Feedback cadences that survive reorgs, and how to instrument them without a backend.</summary>
+  </entry>
+</feed>

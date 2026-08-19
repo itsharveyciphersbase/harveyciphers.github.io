@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  {%- comment -%}
+    One tag from jekyll-seo-tag replaces roughly twenty lines of hand-written
+    metadata: title, description, canonical, Open Graph, Twitter card, and
+    JSON-LD, all derived from _config.yml and the page's front matter.
+  {%- endcomment -%}
+  {% seo %}
+
+  {%- comment -%}
+    jekyll-feed adds the <link rel="alternate"> for the Atom feed it generates.
+  {%- endcomment -%}
+  {% feed_meta %}
+
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}" />
+</head>
+<body>
+  {% include nav.html %}
+
+  <main class="container">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ site.author }}. Built with Jekyll on GitHub Pages.</p>
+    </div>
+  </footer>
+</body>
+</html>

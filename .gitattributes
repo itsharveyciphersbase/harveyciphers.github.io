@@ -1,0 +1,13 @@
+# Normalise text to LF in the repository; let Git handle the working copy.
+* text=auto eol=lf
+
+# Binaries must never be line-ending converted. A CRLF-mangled .wasm fails to
+# compile, and the deploy workflow's reproducibility check would fail with it.
+*.wasm binary
+*.png  binary
+*.woff binary
+*.woff2 binary
+*.ico  binary
+
+# Shell scripts must keep LF or they will not run on the Actions runner.
+*.sh text eol=lf

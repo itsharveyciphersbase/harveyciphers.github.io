@@ -8,6 +8,65 @@
     content="GitHub Pages Playground – explore portfolio, blog, docs, landing page, interactive demos, and design system examples in one static experience."
   />
   <title>GitHub Pages Playground | Harvey Ciphers</title>
+
+  <!--
+    Content Security Policy.
+
+    A static host cannot send HTTP headers, so <meta http-equiv> is the only
+    way to ship a policy at all. It is genuinely weaker than the header form:
+    `frame-ancestors`, `report-uri`, and report-only mode are all ignored in a
+    meta tag, so clickjacking protection is simply not available here.
+
+    `script-src 'self'` stays strict because there is no inline script on this
+    page — the pre-paint theme switch lives in assets/js/theme-init.js
+    precisely so this directive does not need 'unsafe-inline'.
+
+    `'wasm-unsafe-eval'` is required for the WebAssembly demo. Without it the
+    browser refuses to compile the module and reports it as an 'unsafe-eval'
+    violation, which is a confusing way to say "you forgot the wasm keyword".
+    It permits wasm compilation only — not eval() or new Function().
+  -->
+  <meta
+    http-equiv="Content-Security-Policy"
+    content="default-src 'self';
+             script-src 'self' 'wasm-unsafe-eval';
+             style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+             font-src 'self' https://fonts.gstatic.com;
+             img-src 'self' data:;
+             connect-src 'self';
+             base-uri 'self';
+             form-action 'none'"
+  />
+
+  <!-- Canonical + social metadata. Absolute URLs are required by scrapers. -->
+  <link rel="canonical" href="https://itsharveyciphersbase.github.io/harveyciphers.github.io/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Pages Lab" />
+  <meta property="og:title" content="GitHub Pages Playground" />
+  <meta
+    property="og:description"
+    content="Portfolio, blog, docs, launch, PWA, WebAssembly, and design-system patterns — every one of them shipped from a static host."
+  />
+  <meta property="og:url" content="https://itsharveyciphersbase.github.io/harveyciphers.github.io/" />
+  <meta property="og:image" content="https://itsharveyciphersbase.github.io/harveyciphers.github.io/assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Stacked pages on an indigo-to-cyan gradient" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="GitHub Pages Playground" />
+  <meta
+    name="twitter:description"
+    content="Everything you can ship on GitHub Pages without a server, demonstrated live."
+  />
+  <meta name="twitter:image" content="https://itsharveyciphersbase.github.io/harveyciphers.github.io/assets/img/og-image.png" />
+
+  <!-- Icons, installability, and feed discovery -->
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/img/icon-192.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#6366f1" />
+  <link rel="alternate" type="application/atom+xml" title="Pages Lab" href="feed.xml" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -15,6 +74,27 @@
     rel="stylesheet"
   />
   <link rel="stylesheet" href="assets/css/styles.css" />
+
+  <!-- Applies the stored theme before first paint; must not be deferred. -->
+  <script src="assets/js/theme-init.js"></script>
+
+  <!--
+    JSON-LD structured data. Not executed by the browser, so a strict
+    script-src does not block it.
+  -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "GitHub Pages Playground",
+      "url": "https://itsharveyciphersbase.github.io/harveyciphers.github.io/",
+      "description": "A tour of everything you can ship on GitHub Pages without a server.",
+      "author": {
+        "@type": "Person",
+        "name": "Harvey Ciphers"
+      }
+    }
+  </script>
 </head>
 <body>
   <header class="site-header" id="top">
@@ -27,17 +107,23 @@
           <span></span>
           <span></span>
         </button>
-        <ul id="nav-menu" aria-expanded="false">
+        <ul id="nav-menu">
           <li><a href="#portfolio">Portfolio</a></li>
           <li><a href="#blog">Blog</a></li>
           <li><a href="#docs">Docs</a></li>
           <li><a href="#launch">Launch</a></li>
           <li><a href="#playground">Playground</a></li>
           <li><a href="#system">Design System</a></li>
+          <li><a href="#platform">Platform</a></li>
           <li><a href="#start">Get Started</a></li>
         </ul>
       </nav>
-      <a class="cta" href="https://pages.github.com/" target="_blank" rel="noopener">Deploy to GitHub Pages</a>
+      <div class="theme-switcher" role="group" aria-label="Colour theme">
+        <button type="button" data-theme-mode="system">Auto</button>
+        <button type="button" data-theme-mode="light">Light</button>
+        <button type="button" data-theme-mode="dark">Dark</button>
+      </div>
+      <a class="cta" href="capabilities.html">Platform capabilities</a>
     </div>
   </header>
 
@@ -120,7 +206,7 @@
     </section>
 
     <section class="section" id="portfolio" aria-labelledby="portfolio-title">
-      <div class="container feature">
+      <div class="container feature" data-reveal>
         <div class="feature-copy">
           <p class="eyebrow">Personal portfolio</p>
           <h2 id="portfolio-title">Showcase your craft and invite collaboration.</h2>
@@ -136,6 +222,14 @@
         </div>
         <div class="feature-preview portfolio-card" role="img" aria-label="Example of a portfolio page">
           <header>
+            <img
+              src="assets/img/profile-placeholder.svg"
+              alt=""
+              width="40"
+              height="40"
+              loading="lazy"
+              decoding="async"
+            />
             <span>Harvey Ciphers</span>
             <span class="status">Open to collaborations</span>
           </header>
@@ -152,7 +246,7 @@
     </section>
 
     <section class="section alt" id="blog" aria-labelledby="blog-title">
-      <div class="container feature">
+      <div class="container feature" data-reveal>
         <div class="feature-copy">
           <p class="eyebrow">Blog &amp; knowledge base</p>
           <h2 id="blog-title">Publish articles, changelogs, and ideas.</h2>
@@ -178,13 +272,38 @@
               taxonomy included.
             </p>
           </article>
+          <div class="search-box">
+            <label class="sr-only" for="post-search">Search posts</label>
+            <input
+              type="search"
+              id="post-search"
+              data-search-input
+              placeholder="Search posts — try “wasm” or “offline”"
+              role="combobox"
+              aria-expanded="false"
+              aria-controls="search-results"
+              aria-autocomplete="list"
+              autocomplete="off"
+            />
+            <ul
+              class="search-results"
+              id="search-results"
+              data-search-results
+              role="listbox"
+              aria-label="Search results"
+              hidden
+            ></ul>
+          </div>
+          <span class="status-line" data-search-status role="status"></span>
+
           <div class="post-filters" role="group" aria-label="Filter posts by topic">
             <button type="button" class="post-filter is-active" data-filter="all" aria-pressed="true">All</button>
             <button type="button" class="post-filter" data-filter="strategy" aria-pressed="false">Strategy</button>
             <button type="button" class="post-filter" data-filter="engineering" aria-pressed="false">Engineering</button>
             <button type="button" class="post-filter" data-filter="community" aria-pressed="false">Community</button>
           </div>
-          <ul class="post-list">
+          <span class="status-line" data-blog-status role="status"></span>
+          <ul class="post-list" aria-busy="true">
             <li data-topic="strategy">
               <span class="post-topic">Strategy</span>
               <span class="post-title">Designing learning loops for teams</span>
@@ -206,7 +325,7 @@
     </section>
 
     <section class="section" id="docs" aria-labelledby="docs-title">
-      <div class="container feature">
+      <div class="container feature" data-reveal>
         <div class="feature-copy">
           <p class="eyebrow">Product documentation</p>
           <h2 id="docs-title">Document APIs, onboarding flows, and workflows.</h2>
@@ -308,7 +427,7 @@ $ pages deploy
     </section>
 
     <section class="section alt" id="launch" aria-labelledby="launch-title">
-      <div class="container feature">
+      <div class="container feature" data-reveal>
         <div class="feature-copy">
           <p class="eyebrow">Launch &amp; marketing</p>
           <h2 id="launch-title">Announce new products with conversion-focused pages.</h2>
@@ -342,7 +461,7 @@ $ pages deploy
     </section>
 
     <section class="section" id="playground" aria-labelledby="playground-title">
-      <div class="container feature">
+      <div class="container feature" data-reveal>
         <div class="feature-copy">
           <p class="eyebrow">Interactive playground</p>
           <h2 id="playground-title">Add client-side interactivity without servers.</h2>
@@ -371,7 +490,7 @@ $ pages deploy
               <input type="color" id="color-accent" name="color-accent" value="#22d3ee" />
             </label>
             <label>
-              Angle
+              Angle <span data-angle-value>135 degrees</span>
               <input type="range" id="gradient-angle" name="gradient-angle" min="0" max="360" value="135" />
             </label>
             <button type="button" id="randomize-gradient">Randomize</button>
@@ -385,15 +504,47 @@ $ pages deploy
           </div>
           <div class="playground-code">
             <pre><code id="gradient-code">background: linear-gradient(135deg, #6366f1, #22d3ee);</code></pre>
-            <button type="button" class="copy-gradient">Copy CSS</button>
-            <span class="copy-feedback" role="status" aria-live="polite"></span>
+            <copy-button for="gradient-code" label="Copy CSS"></copy-button>
           </div>
+        </div>
+      </div>
+
+      <div class="container demo-grid" style="margin-top:2.5rem" data-reveal>
+        <div class="demo-panel">
+          <h3>Canvas, rendered at device resolution</h3>
+          <p>
+            Canvas, WebGL, and Web Audio need nothing from the host. The animation pauses
+            itself when the tab is hidden and never starts if you have asked for reduced motion.
+          </p>
+          <div class="canvas-frame">
+            <canvas data-canvas role="img" aria-label="Animated constellation of linked points"></canvas>
+          </div>
+          <button type="button" class="btn ghost" data-canvas-toggle aria-pressed="true" style="margin-top:0.85rem">
+            Pause animation
+          </button>
+        </div>
+
+        <div class="demo-panel">
+          <h3>WebAssembly from a static file</h3>
+          <p>
+            <code>assets/wasm/demo.wasm</code> is 103 bytes, committed to the repository and served
+            like any other asset. Pages does not compile it &mdash; your browser does.
+          </p>
+          <div class="wasm-controls">
+            <label>
+              fib(n)
+              <input type="number" data-wasm-input value="30" min="0" max="90" />
+            </label>
+            <button type="button" class="btn ghost" data-wasm-run>Run the module</button>
+          </div>
+          <dl class="wasm-output" data-wasm-output></dl>
+          <span class="status-line" data-wasm-status role="status"></span>
         </div>
       </div>
     </section>
 
     <section class="section alt" id="system" aria-labelledby="system-title">
-      <div class="container feature">
+      <div class="container feature" data-reveal>
         <div class="feature-copy">
           <p class="eyebrow">Design systems &amp; Storybooks</p>
           <h2 id="system-title">Document your components and brand tokens.</h2>
@@ -419,11 +570,16 @@ $ pages deploy
           <section class="token-grid">
             <div>
               <h4>Colors</h4>
-              <div class="swatches">
-                <span class="swatch" data-label="Primary"></span>
-                <span class="swatch" data-label="Accent"></span>
-                <span class="swatch" data-label="Surface"></span>
-                <span class="swatch" data-label="Success"></span>
+              <!--
+                <token-swatch> is a real custom element (assets/js/components/).
+                It computes the WCAG contrast ratio against white in the browser,
+                so the documentation cannot drift from the tokens it documents.
+              -->
+              <div class="swatches swatch-grid">
+                <token-swatch name="--color-primary" value="#6366f1" on="#ffffff"></token-swatch>
+                <token-swatch name="--color-accent" value="#22d3ee" on="#ffffff"></token-swatch>
+                <token-swatch name="--color-success" value="#10b981" on="#ffffff"></token-swatch>
+                <token-swatch name="--color-text" value="#0f172a" on="#ffffff"></token-swatch>
               </div>
             </div>
             <div>
@@ -443,6 +599,85 @@ $ pages deploy
             <p>Ship a shared source of truth for product, design, and engineering.</p>
           </footer>
         </div>
+      </div>
+    </section>
+
+    <section class="section" id="platform" aria-labelledby="platform-title">
+      <div class="container">
+        <div class="feature-copy" data-reveal>
+          <p class="eyebrow">Platform features</p>
+          <h2 id="platform-title">The parts that are not layout.</h2>
+          <p>
+            Everything above is markup and CSS. These panels exercise the browser and hosting
+            features that make a static site behave like an application &mdash; each one live on this
+            page, not described in the abstract.
+          </p>
+        </div>
+
+        <div class="demo-grid" style="margin-top:2rem">
+          <div class="demo-panel" data-reveal>
+            <h3>Installable and offline</h3>
+            <p>
+              A web app manifest plus a service worker turn this page into an installable app that
+              works with the network off. Both are static files; the only requirement is HTTPS,
+              which Pages provides on <code>*.github.io</code> and custom domains alike.
+            </p>
+            <div class="pwa-actions">
+              <span class="connection-pill" data-connection-status>Online</span>
+              <button type="button" class="btn ghost" data-pwa-install hidden disabled>Install this app</button>
+            </div>
+            <span class="status-line" data-pwa-status role="status"></span>
+            <div class="update-banner" data-pwa-update hidden>
+              <span>A new version has been cached.</span>
+              <button type="button" class="btn ghost" data-pwa-update-action>Reload to update</button>
+            </div>
+          </div>
+
+          <div class="demo-panel" data-reveal>
+            <h3>Client-side routing</h3>
+            <p>
+              Pages has no rewrite rules, so a deep link into a single-page app would normally
+              404 on refresh. The fix is a <code>404.html</code> that hands the path back to the
+              app through a query string.
+            </p>
+            <ul class="feature-list">
+              <li>Real URLs via the History API, no hash routing.</li>
+              <li>Deep links survive a hard refresh.</li>
+              <li>Back and forward buttons behave normally.</li>
+            </ul>
+            <a class="btn ghost" href="demos/spa/" style="margin-top:0.5rem">Open the routing demo</a>
+          </div>
+
+          <div class="demo-panel" data-reveal>
+            <h3>Redirects, such as they are</h3>
+            <p>
+              There is no way to send a <code>301</code> from a static host. A meta refresh plus a
+              canonical link is the whole toolkit &mdash; and it is exactly what the
+              <code>jekyll-redirect-from</code> plugin generates for you.
+            </p>
+            <a class="btn ghost" href="demos/redirect-from/old-url.html">Follow a redirect stub</a>
+          </div>
+
+          <div class="demo-panel" data-reveal>
+            <h3>Feeds, sitemaps, and robots</h3>
+            <p>
+              Syndication needs no server either. These are three static documents that Pages
+              serves verbatim; on a Jekyll build the <code>jekyll-feed</code> and
+              <code>jekyll-sitemap</code> plugins generate them from your posts.
+            </p>
+            <div class="pwa-actions">
+              <a class="btn ghost" href="feed.xml">feed.xml</a>
+              <a class="btn ghost" href="sitemap.xml">sitemap.xml</a>
+              <a class="btn ghost" href="robots.txt">robots.txt</a>
+            </div>
+          </div>
+        </div>
+
+        <p style="margin-top:2rem;text-align:center">
+          <a class="btn primary" href="capabilities.html">
+            See the full capability matrix, limits, and gotchas
+          </a>
+        </p>
       </div>
     </section>
 
@@ -483,7 +718,7 @@ $ pages deploy
         </p>
       </div>
       <div class="footer-meta">
-        <a href="https://github.com/harveyciphers" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://github.com/itsharveyciphersbase" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
         <a href="#top">Back to top</a>
       </div>
@@ -491,6 +726,6 @@ $ pages deploy
     </div>
   </footer>
 
-  <script src="assets/js/main.js" defer></script>
+  <script type="module" src="assets/js/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,9 @@
+# A data file. Anything in _data/ becomes available as site.data.<filename>,
+# which keeps structural content out of your templates. YAML, JSON, CSV, and
+# TSV all work.
+- title: Home
+  url: /
+- title: Posts
+  url: /posts/
+- title: Tutorials
+  url: /tutorials/

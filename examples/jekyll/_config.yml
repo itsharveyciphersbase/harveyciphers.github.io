@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------------------
+# Jekyll configuration for the built-in GitHub Pages build.
+#
+# Drop this directory's contents at the root of a repository and Pages will
+# build it with no workflow file and no build minutes consumed. Nothing here
+# needs installing first: every plugin listed below is on the Pages allowlist.
+# ---------------------------------------------------------------------------
+
+title: Pages Lab
+tagline: Notes from the GitHub Pages Playground
+description: >-
+  A minimal Jekyll site showing collections, data files, layouts, and the
+  plugins GitHub Pages allows without a custom build.
+author: Harvey Ciphers
+
+# `url` is the origin; `baseurl` is the subpath. A project page (any repo NOT
+# named <owner>.github.io) is served from /<repo>/, and getting this wrong is
+# the most common cause of a site with no CSS.
+url: https://itsharveyciphersbase.github.io
+baseurl: /harveyciphers.github.io
+
+# --- Plugins ---------------------------------------------------------------
+# The full allowlist is small. These four cover most needs; adding anything
+# outside it is silently ignored by the built-in build, and the only way around
+# that is to build with GitHub Actions instead.
+plugins:
+  - jekyll-feed          # generates /feed.xml from _posts
+  - jekyll-sitemap       # generates /sitemap.xml
+  - jekyll-seo-tag       # emits Open Graph, Twitter, and JSON-LD metadata
+  - jekyll-redirect-from # generates meta-refresh stubs for moved pages
+
+# --- Collections -----------------------------------------------------------
+# Posts are built in; a collection is how you get a second, differently shaped
+# stream of documents (tutorials, release notes, team profiles, case studies).
+collections:
+  tutorials:
+    output: true
+    permalink: /tutorials/:path/
+
+# --- Defaults --------------------------------------------------------------
+# Set front matter once here rather than repeating it in every file.
+defaults:
+  - scope:
+      path: ''
+      type: posts
+    values:
+      layout: post
+  - scope:
+      path: ''
+      type: tutorials
+    values:
+      layout: post
+
+permalink: /posts/:title/
+timezone: Etc/UTC
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock

@@ -1,0 +1,9 @@
+# Only needed to preview the site locally with `bundle exec jekyll serve`.
+# GitHub Pages ignores this file when it runs the built-in build; it pins its
+# own dependency set through the github-pages gem.
+source 'https://rubygems.org'
+
+gem 'github-pages', group: :jekyll_plugins
+
+# Windows and JRuby do not include zoneinfo files.
+gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

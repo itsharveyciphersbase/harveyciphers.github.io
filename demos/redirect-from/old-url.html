@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!--
+    GitHub Pages cannot send a 301. There is no server configuration to edit and
+    no way to set a Location header, so the only redirect available on a static
+    host is this: a meta refresh plus a canonical link.
+
+    The `jekyll-redirect-from` plugin (on the Pages allowlist) generates exactly
+    this file for every `redirect_from:` entry in a page's front matter.
+
+    Caveats worth knowing:
+      - Search engines treat it as a weaker signal than a real 301.
+      - The visitor briefly lands here, so the back button needs the
+        `location.replace()` below to avoid a redirect loop.
+  -->
+  <meta http-equiv="refresh" content="0; url=../../index.html#launch" />
+  <link rel="canonical" href="../../index.html" />
+  <meta name="robots" content="noindex" />
+  <title>Redirecting…</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      margin: 0;
+      color: #475569;
+      background: #f5f7fb;
+    }
+    a { color: #4f46e5; }
+  </style>
+</head>
+<body>
+  <p>
+    Redirecting to the <a href="../../index.html#launch">launch section</a>&hellip;
+  </p>
+  <script>
+    // replace() rather than assign(), so this stub does not become a trap in
+    // the visitor's back-button history.
+    window.location.replace(new URL('../../index.html#launch', window.location.href).href);
+  </script>
+</body>
+</html>

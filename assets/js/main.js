@@ -1,189 +1,211 @@
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.querySelector('.main-nav ul');
-const yearEl = document.getElementById('year');
+/**
+ * Entry point for the GitHub Pages Playground.
+ *
+ * Loaded as an ES module (<script type="module">), which gives us real imports
+ * with no bundler — the browser fetches the dependency graph itself. Modules are
+ * deferred by default, so the DOM is ready by the time this runs.
+ */
+import { initTheme } from './modules/theme.js';
+import { initBlog } from './modules/blog.js';
+import { initSearch } from './modules/search.js';
+import { initReveal, initScrollSpy } from './modules/reveal.js';
+import { initCanvas } from './modules/canvas.js';
+import { initWasm } from './modules/wasm.js';
+import { initPwa } from './modules/pwa.js';
 
-if (navToggle && navMenu) {
+// Custom elements self-register on import.
+import './components/token-swatch.js';
+import './components/copy-button.js';
+
+// --- Navigation --------------------------------------------------------------
+function initNav() {
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.main-nav ul');
+  if (!navToggle || !navMenu) return;
+
+  function setOpen(open) {
+    // aria-expanded belongs on the control, not on the list it reveals.
+    navToggle.setAttribute('aria-expanded', String(open));
+    navMenu.dataset.open = String(open);
+    navToggle.classList.toggle('is-open', open);
+  }
+
+  setOpen(false);
+
   navToggle.addEventListener('click', () => {
-    const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-    navToggle.setAttribute('aria-expanded', String(!expanded));
-    navMenu.setAttribute('aria-expanded', String(!expanded));
-    navToggle.classList.toggle('is-open');
+    setOpen(navToggle.getAttribute('aria-expanded') !== 'true');
   });
 
   navMenu.querySelectorAll('a').forEach((link) => {
     link.addEventListener('click', () => {
-      if (window.innerWidth <= 960) {
-        navToggle.setAttribute('aria-expanded', 'false');
-        navMenu.setAttribute('aria-expanded', 'false');
-        navToggle.classList.remove('is-open');
-      }
+      if (window.innerWidth <= 960) setOpen(false);
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && navToggle.getAttribute('aria-expanded') === 'true') {
+      setOpen(false);
+      navToggle.focus();
+    }
+  });
+}
+
+// --- Smooth scrolling --------------------------------------------------------
+function initSmoothScroll() {
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (event) => {
+      const targetId = anchor.getAttribute('href');
+      if (!targetId || targetId === '#') return;
+
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+
+      // Keep the URL shareable and the back button meaningful — the previous
+      // implementation swallowed the hash entirely.
+      history.pushState(null, '', targetId);
+
+      // scrollIntoView does not move focus, which strands keyboard users.
+      target.setAttribute('tabindex', '-1');
+      target.focus({ preventScroll: true });
     });
   });
 }
 
-if (yearEl) {
-  yearEl.textContent = String(new Date().getFullYear());
-}
+// --- Gradient builder --------------------------------------------------------
+function initGradientBuilder() {
+  const baseInput = document.getElementById('color-base');
+  const accentInput = document.getElementById('color-accent');
+  const angleInput = document.getElementById('gradient-angle');
+  const randomizeButton = document.getElementById('randomize-gradient');
+  const preview = document.querySelector('.playground-preview');
+  const code = document.getElementById('gradient-code');
 
-document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-  anchor.addEventListener('click', (event) => {
-    const targetId = anchor.getAttribute('href');
-    if (!targetId || targetId === '#') return;
+  if (!baseInput || !accentInput || !angleInput || !preview || !code) return;
 
-    const targetElement = document.querySelector(targetId);
-    if (targetElement) {
-      event.preventDefault();
-      targetElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  });
-});
+  function update() {
+    const gradient = `linear-gradient(${angleInput.value}deg, ${baseInput.value}, ${accentInput.value})`;
+    preview.style.background = gradient;
+    code.textContent = `background: ${gradient};`;
 
-const baseInput = document.getElementById('color-base');
-const accentInput = document.getElementById('color-accent');
-const angleInput = document.getElementById('gradient-angle');
-const randomizeButton = document.getElementById('randomize-gradient');
-const gradientPreview = document.querySelector('.playground-preview');
-const gradientCode = document.getElementById('gradient-code');
-const copyButton = document.querySelector('.copy-gradient');
-const copyFeedback = document.querySelector('.copy-feedback');
-
-function updateGradient() {
-  if (!baseInput || !accentInput || !angleInput || !gradientPreview || !gradientCode) {
-    return;
+    const angleLabel = document.querySelector('[data-angle-value]');
+    if (angleLabel) angleLabel.textContent = `${angleInput.value} degrees`;
   }
 
-  const baseColor = baseInput.value;
-  const accentColor = accentInput.value;
-  const angle = angleInput.value;
-  const gradient = `linear-gradient(${angle}deg, ${baseColor}, ${accentColor})`;
-
-  gradientPreview.style.background = gradient;
-  gradientCode.textContent = `background: ${gradient};`;
-}
-
-function randomColor() {
-  return `#${Math.floor(Math.random() * 0xffffff)
-    .toString(16)
-    .padStart(6, '0')}`;
-}
-
-if (baseInput && accentInput && angleInput) {
-  updateGradient();
+  function randomChannel() {
+    return `#${Math.floor(Math.random() * 0xffffff)
+      .toString(16)
+      .padStart(6, '0')}`;
+  }
 
   [baseInput, accentInput, angleInput].forEach((input) => {
-    input.addEventListener('input', updateGradient);
+    input.addEventListener('input', update);
   });
-}
 
-if (randomizeButton) {
-  randomizeButton.addEventListener('click', () => {
-    if (!baseInput || !accentInput || !angleInput) {
-      return;
-    }
-
-    baseInput.value = randomColor();
-    accentInput.value = randomColor();
-    angleInput.value = String(Math.floor(Math.random() * 361));
-    updateGradient();
-  });
-}
-
-if (copyButton && gradientCode) {
-  copyButton.addEventListener('click', async () => {
-    const cssSnippet = (gradientCode.textContent || '').trim();
-    if (!cssSnippet) return;
-
-    try {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(cssSnippet);
-      } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = cssSnippet;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'absolute';
-        textarea.style.opacity = '0';
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textarea);
-      }
-      if (copyFeedback) {
-        copyFeedback.textContent = 'CSS copied to clipboard!';
-      }
-    } catch (error) {
-      if (copyFeedback) {
-        copyFeedback.textContent = 'Press Ctrl+C to copy manually.';
-      }
-    }
-
-    if (copyFeedback) {
-      setTimeout(() => {
-        copyFeedback.textContent = '';
-      }, 2500);
-    }
-  });
-}
-
-const postFilters = document.querySelectorAll('.post-filter');
-const postItems = document.querySelectorAll('.post-list li');
-
-if (postFilters.length && postItems.length) {
-  postFilters.forEach((button) => {
-    button.setAttribute('aria-pressed', button.classList.contains('is-active') ? 'true' : 'false');
-    button.addEventListener('click', () => {
-      const filter = button.dataset.filter;
-
-      postFilters.forEach((btn) => {
-        const isActive = btn === button;
-        btn.classList.toggle('is-active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      });
-
-      postItems.forEach((item) => {
-        const topic = item.dataset.topic;
-        const matches = !filter || filter === 'all' || topic === filter;
-        item.hidden = !matches;
-      });
+  if (randomizeButton) {
+    randomizeButton.addEventListener('click', () => {
+      baseInput.value = randomChannel();
+      accentInput.value = randomChannel();
+      angleInput.value = String(Math.floor(Math.random() * 361));
+      update();
     });
-  });
+  }
+
+  update();
 }
 
-const codeTabs = document.querySelectorAll('.code-tab');
-const codePanels = document.querySelectorAll('.code-panel');
+// --- Tabbed code samples -----------------------------------------------------
+function initCodeTabs() {
+  const tablist = document.querySelector('.code-tabs');
+  if (!tablist) return;
 
-if (codeTabs.length && codePanels.length) {
-  codeTabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const targetId = tab.dataset.target;
+  const tabs = Array.from(tablist.querySelectorAll('.code-tab'));
+  const panels = Array.from(document.querySelectorAll('.code-panel'));
+  if (!tabs.length || !panels.length) return;
 
-      codeTabs.forEach((btn) => {
-        const isActive = btn === tab;
-        btn.classList.toggle('is-active', isActive);
-        btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
-      });
-
-      codePanels.forEach((panel) => {
-        panel.classList.toggle('is-active', panel.id === targetId);
-      });
+  function select(tab, { focus = true } = {}) {
+    tabs.forEach((other) => {
+      const isActive = other === tab;
+      other.classList.toggle('is-active', isActive);
+      other.setAttribute('aria-selected', String(isActive));
+      // Roving tabindex: only the selected tab is in the tab order, so Tab
+      // moves past the tablist rather than through every tab inside it.
+      other.setAttribute('tabindex', isActive ? '0' : '-1');
     });
+
+    panels.forEach((panel) => {
+      panel.classList.toggle('is-active', panel.id === tab.dataset.target);
+    });
+
+    if (focus) tab.focus();
+  }
+
+  tabs.forEach((tab) => tab.addEventListener('click', () => select(tab, { focus: false })));
+
+  // The ARIA tabs pattern requires arrow-key navigation; declaring role="tab"
+  // without it is worse than using plain buttons.
+  tablist.addEventListener('keydown', (event) => {
+    const currentIndex = tabs.indexOf(document.activeElement);
+    if (currentIndex === -1) return;
+
+    const destinations = {
+      ArrowRight: (currentIndex + 1) % tabs.length,
+      ArrowLeft: (currentIndex - 1 + tabs.length) % tabs.length,
+      Home: 0,
+      End: tabs.length - 1,
+    };
+
+    if (!(event.key in destinations)) return;
+    event.preventDefault();
+    select(tabs[destinations[event.key]]);
   });
+
+  const initial = tabs.find((tab) => tab.classList.contains('is-active')) || tabs[0];
+  select(initial, { focus: false });
 }
 
-const themeToggles = document.querySelectorAll('.theme-toggle');
-const systemCard = document.querySelector('.system-card');
+// --- Design-system theme preview --------------------------------------------
+// Scoped to the demo card only; the site-wide theme lives in modules/theme.js.
+function initSystemCardTheme() {
+  const card = document.querySelector('.system-card');
+  const toggles = document.querySelectorAll('.theme-toggle');
+  if (!card || !toggles.length) return;
 
-if (systemCard && themeToggles.length) {
-  themeToggles.forEach((toggle) => {
-    toggle.setAttribute('aria-pressed', toggle.classList.contains('is-active') ? 'true' : 'false');
+  toggles.forEach((toggle) => {
+    toggle.setAttribute('aria-pressed', String(toggle.classList.contains('is-active')));
     toggle.addEventListener('click', () => {
-      const theme = toggle.dataset.theme || 'light';
-      systemCard.setAttribute('data-theme', theme);
-
-      themeToggles.forEach((btn) => {
-        const isActive = btn === toggle;
-        btn.classList.toggle('is-active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      card.setAttribute('data-theme', toggle.dataset.theme || 'light');
+      toggles.forEach((other) => {
+        const isActive = other === toggle;
+        other.classList.toggle('is-active', isActive);
+        other.setAttribute('aria-pressed', String(isActive));
       });
     });
   });
 }
+
+function initFooterYear() {
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+}
+
+// --- Boot --------------------------------------------------------------------
+initTheme();
+initNav();
+initSmoothScroll();
+initGradientBuilder();
+initCodeTabs();
+initSystemCardTheme();
+initFooterYear();
+initReveal();
+initScrollSpy();
+initCanvas();
+initWasm();
+initPwa();
+
+// These two touch the network; a failure must not take the rest of the page down.
+initBlog()
+  .then(() => initSearch())
+  .catch((error) => console.error('[main]', error));

@@ -1,0 +1,82 @@
+# ---------------------------------------------------------------------------
+# Deploy the static site to GitHub Pages.
+#
+# This is the "publish with Actions" pipeline. Even though this site needs no
+# build, routing the deployment through Actions is what frees a project from the
+# built-in Jekyll pipeline and its plugin allowlist: swap the "Build" step for
+# `npm run build` (Astro, Vite, Eleventy, a static Next export) and nothing else
+# in this file has to change.
+#
+# Requires: Settings -> Pages -> Source set to "GitHub Actions".
+# ---------------------------------------------------------------------------
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# GITHUB_TOKEN needs these to publish. `id-token` is required by
+# actions/deploy-pages for its OIDC-based deployment.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deployments race. `cancel-in-progress: false` lets an
+# in-flight deploy finish rather than leaving the site half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # The committed binaries are generated, so rebuild them and fail the
+      # deploy if the checked-in copies have drifted from their sources.
+      - name: Verify generated assets are reproducible
+        run: |
+          node scripts/build-wasm.mjs
+          node scripts/generate-icons.mjs
+          if ! git diff --quiet -- assets/wasm assets/img; then
+            echo "::error::Generated assets differ from their committed copies."
+            echo "Run 'node scripts/build-wasm.mjs && node scripts/generate-icons.mjs' and commit the result."
+            git --no-pager diff --stat -- assets/wasm assets/img
+            exit 1
+          fi
+
+      - name: Check JavaScript syntax
+        run: bash scripts/check-syntax.sh
+
+      # No build step: the site is already static. This is where `npm ci &&
+      # npm run build` would go, with `path` pointed at the output directory.
+      - name: Build
+        run: echo "Static site — nothing to compile."
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4

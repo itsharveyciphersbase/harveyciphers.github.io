@@ -1,0 +1,29 @@
+---
+layout: default
+---
+{%- comment -%}
+  Layouts nest: this one wraps its content and hands the result to `default`.
+  The front matter above is how that inheritance is declared.
+{%- endcomment -%}
+<article class="post">
+  <header>
+    <h1>{{ page.title }}</h1>
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: '%-d %B %Y' }}
+      </time>
+      {%- if page.topic %} &middot; <span>{{ page.topic }}</span>{% endif -%}
+      {%- if page.content %} &middot; {{ page.content | number_of_words | divided_by: 200 | plus: 1 }} min read{% endif -%}
+    </p>
+
+    {%- if page.tags.size > 0 %}
+    <ul class="tag-list">
+      {%- for tag in page.tags %}
+      <li>{{ tag }}</li>
+      {%- endfor %}
+    </ul>
+    {%- endif %}
+  </header>
+
+  {{ content }}
+</article>

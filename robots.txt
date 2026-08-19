@@ -1,0 +1,7 @@
+# robots.txt is served verbatim by GitHub Pages — it is just a static file.
+User-agent: *
+Allow: /
+Disallow: /demos/redirect-from/
+
+# Update the host if you attach a custom domain via the CNAME file.
+Sitemap: https://itsharveyciphersbase.github.io/harveyciphers.github.io/sitemap.xml

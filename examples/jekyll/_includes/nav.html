@@ -1,0 +1,24 @@
+{%- comment -%}
+  An include, driven by _data/navigation.yml. Editing the nav means editing a
+  YAML file, not hunting through templates.
+
+  `relative_url` prepends site.baseurl, which is what makes the same markup work
+  on a project page served from a subpath.
+{%- endcomment -%}
+<header class="site-header">
+  <div class="container header-content">
+    <a class="logo" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    <nav aria-label="Primary">
+      <ul>
+        {%- for item in site.data.navigation %}
+        <li>
+          <a
+            href="{{ item.url | relative_url }}"
+            {% if page.url == item.url %}aria-current="page"{% endif %}
+          >{{ item.title }}</a>
+        </li>
+        {%- endfor %}
+      </ul>
+    </nav>
+  </div>
+</header>
